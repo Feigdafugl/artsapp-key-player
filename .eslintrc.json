@@ -1,0 +1,52 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "indent": "off",
+        "quote-props": "off",
+        "react/prop-types" : "off",
+        "react/jsx-indent": "off",
+        "react/jsx-indent-props": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/jsx-props-no-spreading": "off",
+        "no-unused-vars": "warn",
+        "no-shadow": "warn",
+        "no-param-reassign": "warn",
+        "camelcase": "warn",
+        "no-empty": "warn",
+        "no-nested-ternary": "warn",
+        "prefer-destructuring": "warn",
+        "no-unneeded-ternary": "warn",
+        "react/no-array-index-key": "warn",
+        "no-restricted-syntax": "warn",
+        "no-use-before-define": "warn",
+        "no-continue": "warn",
+        "no-extra-boolean-cast": "warn",
+        "prefer-template": "warn",
+        "jsx-a11y/click-events-have-key-events": "warn",
+        "jsx-a11y/no-noninteractive-element-interactions": "warn",
+        "react/no-children-prop": "warn",
+        "no-loop-func": "warn",
+        "no-underscore-dangle": "warn",
+        "import/no-webpack-loader-syntax": "warn",
+        "import/no-unresolved": "warn",
+        "no-await-in-loop": "warn",
+        "arrow-body-style": "warn"
+    }
+}
