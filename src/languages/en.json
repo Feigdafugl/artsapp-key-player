@@ -46,6 +46,7 @@
     "btnRemoveAll": "Remove all",
     "btnAboutKey": "About key",
     "btnToggleOperator": "Toggle operator",
+    "btnUpdate": "Update",
     "labelChange": "(change)",
     "labelLanguage": "Language",
     "remaining": " remaining of ",
@@ -120,5 +121,6 @@
     "currentPosition": "Your current position:",
     "labelLocal": "Local:",
     "labelRegional": "Regional:",
-    "labelNational": "National:"
+    "labelNational": "National:",
+    "updateAvailable": "An updated version of ArtsApp is available. Close all tabs and re-open ArtsApp to activate the new version."
 }

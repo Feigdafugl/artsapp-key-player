@@ -46,6 +46,7 @@
     "btnRemoveAll": "Fjern alle",
     "btnAboutKey": "Om nøkkelen",
     "btnToggleOperator": "Bytt operator",
+    "btnUpdate": "Oppdater",
     "labelChange": "(endre)",
     "labelLanguage": "Språk",
     "remaining": " gjenstående av ",
@@ -120,5 +121,6 @@
     "currentPosition": "Din nåværende posisjon:",
     "labelLocal": "Lokalt:",
     "labelRegional": "Regionalt:",
-    "labelNational": "Nasjonalt:"
+    "labelNational": "Nasjonalt:",
+    "updateAvailable": "En oppdatert versjon av ArtsApp er tilgjengelig. Lukk alle faner og åpne ArtsApp på nytt for å aktivere den nye versjonen."
 }

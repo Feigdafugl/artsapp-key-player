@@ -2,6 +2,7 @@ import React, { StrictMode, useEffect, useState } from 'react';
 import './styles/tailwind.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
 import LanguageContext from './context/LanguageContext';
 import PageContext from './context/PageContext';
 import { dictionary } from './languages/language';
@@ -37,6 +38,7 @@ const App = () => {
   const pageValue = { page, setPage };
 
   const [pageTitle, setPageTitle] = useState(undefined);
+  const [updateReady, setUpdateReady] = useState(false);
 
   /**
    * Check for previously selected language
@@ -47,6 +49,27 @@ const App = () => {
       setLanguage({ language: selectedLanguage, dictionary: dictionary[selectedLanguage] });
     }
   }, [language]);
+
+  /**
+   * Add listener for update ready events
+   */
+  useEffect(() => {
+    document.addEventListener('updateready', () => setUpdateReady(true));
+    return () => window.removeEventListener('updateready', () => setUpdateReady(true));
+  }, []);
+
+  /**
+   * Render notification if update is available
+   *
+   * @returns JSX
+   */
+  const renderUpdateNotification = () => (
+    <div className="fixed bottom-20 left-2 lg:left-72 lg:right-auto z-40">
+      <Alert elevation={6} variant="filled" severity="info">
+        {language.dictionary.updateAvailable}
+      </Alert>
+    </div>
+  );
 
   /**
    * Render page with component
@@ -66,6 +89,7 @@ const App = () => {
           <PageContext.Provider value={pageValue}>
             <ThemeProvider theme={materialTheme}>
               <Nav title={pageTitle} />
+              {updateReady && renderUpdateNotification()}
               <Switch>
                 <Route path="/" exact component={() => renderPage(Keys)} />
                 <Route path="/info/:keyId" exact component={() => renderPage(KeyInfo)} />
