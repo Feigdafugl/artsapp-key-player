@@ -41,7 +41,7 @@ const CharacterList = ({ characters, onSelectStates, offline }) => {
                     <Badge
                         badgeContent={`${remaining}/${total}`}
                         color={remaining !== total ? 'secondary' : 'primary'}
-                        overlap="rectangle"
+                        overlap="rectangular"
                         anchorOrigin={{
                             vertical: 'top',
                             horizontal: 'left',

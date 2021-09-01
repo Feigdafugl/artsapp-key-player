@@ -17,7 +17,7 @@ import initialize from '../../utils/key';
 /**
  * Render taxon page
  */
-const Taxon = ({ onSetTitle }) => {
+const Taxon = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
     const { taxonId } = useParams();
     const location = useLocation();
@@ -32,6 +32,13 @@ const Taxon = ({ onSetTitle }) => {
     const [offline, setOffline] = useState(undefined);
     const [preview, setPreview] = useState(false);
     const [occurrences, setOccurrences] = useState(undefined);
+
+    /**
+     * Scroll to top on launch
+     */
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
 
     /**
      * Set geolocation coordinates
@@ -85,6 +92,7 @@ const Taxon = ({ onSetTitle }) => {
         const element = getTaxon(taxonId, key.taxa);
         setTaxon(element);
         onSetTitle(isPreview ? language.dictionary.headerPreview : element.scientificName);
+        onPageView(isPreview ? language.dictionary.headerPreview : element.scientificName);
     };
 
     /**

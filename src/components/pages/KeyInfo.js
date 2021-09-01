@@ -19,7 +19,7 @@ import { getKeyInfoFromDatabase } from '../../utils/db';
 /**
  * Render key info page
  */
-const KeyInfo = ({ onSetTitle }) => {
+const KeyInfo = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
     const { keyId } = useParams();
     const history = useHistory();
@@ -33,6 +33,13 @@ const KeyInfo = ({ onSetTitle }) => {
     const [offline, setOffline] = useState(undefined);
 
     /**
+     * Scroll to top on launch
+     */
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
+    /**
      * Get key from API
      */
     useEffect(() => {
@@ -43,9 +50,11 @@ const KeyInfo = ({ onSetTitle }) => {
                     if (element[1] && (!element[0] || language.language.split('_')[0] === 'en')) {
                         setKey(element[1]);
                         onSetTitle(getLanguage(element[1].title, language.language.split('_')[0]));
+                        onPageView(`Info - ${getLanguage(element[1].title, language.language.split('_')[0])}`);
                     } else {
                         setKey(element[0]);
                         onSetTitle(getLanguage(element[0].title, language.language.split('_')[0]));
+                        onPageView(`Info - ${getLanguage(element[0].title, language.language.split('_')[0])}`);
                     }
                     setOffline(true);
                 }).catch(() => {
@@ -64,11 +73,13 @@ const KeyInfo = ({ onSetTitle }) => {
                 getKeyInfo(keyId, language.language.split('_')[0]).then((element) => {
                     setKey(element);
                     onSetTitle(getLanguage(element.title, language.language.split('_')[0]));
+                    onPageView(`Info - ${getLanguage(element.title, language.language.split('_')[0])}`);
                     setOffline(false);
                 }).catch(() => {
                     getKeyInfo(keyId, language.language.split('_')[0] === 'en' ? 'no' : 'en').then((element) => {
                         setKey(element);
                         onSetTitle(getLanguage(element.title, language.language.split('_')[0]));
+                        onPageView(`Info - ${getLanguage(element.title, language.language.split('_')[0])}`);
                         setOffline(false);
                     }).catch(() => {
                         setError(language.dictionary.internalAPIError);
@@ -89,13 +100,6 @@ const KeyInfo = ({ onSetTitle }) => {
         }
         if (key) setShowProgress(false);
     }, [keyId, key, keys, organizations]);
-
-    /**
-     * Scroll to top on launch
-     */
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, []);
 
     /**
      * Start identification

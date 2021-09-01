@@ -1,6 +1,10 @@
-import React, { StrictMode, useEffect, useState } from 'react';
+import React, {
+  StrictMode, useCallback, useEffect, useState,
+} from 'react';
 import './styles/tailwind.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { getCookieConsentValue } from 'react-cookie-consent';
+import debounce from 'lodash/debounce';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import LanguageContext from './context/LanguageContext';
@@ -18,6 +22,8 @@ import Key from './components/pages/Key';
 import Help from './components/pages/Help';
 import Taxon from './components/pages/Taxon';
 import Downloads from './components/pages/Downloads';
+import CookieNotice from './components/components/CookieNotice';
+import trackPageView from './utils/analytics';
 
 const App = () => {
   const languageState = {
@@ -38,6 +44,7 @@ const App = () => {
   const pageValue = { page, setPage };
 
   const [pageTitle, setPageTitle] = useState(undefined);
+  const [cookieConsent, setCookieConsent] = useState(getCookieConsentValue());
   const [updateReady, setUpdateReady] = useState(false);
 
   /**
@@ -51,6 +58,15 @@ const App = () => {
   }, [language]);
 
   /**
+   * Check for cookie consent and initialize Google Analytics
+   */
+  useEffect(() => {
+    if (getCookieConsentValue() !== cookieConsent) {
+      setCookieConsent(getCookieConsentValue());
+    }
+  }, [cookieConsent]);
+
+  /**
    * Add listener for update ready events
    */
   useEffect(() => {
@@ -59,12 +75,19 @@ const App = () => {
   }, []);
 
   /**
+   * Handle page view tracking
+   */
+  const handlePageView = useCallback(
+    debounce(async (title) => trackPageView(title), 500), [],
+  );
+
+  /**
    * Render notification if update is available
    *
    * @returns JSX
    */
   const renderUpdateNotification = () => (
-    <div className="fixed bottom-20 left-2 lg:left-72 lg:right-auto z-40">
+    <div className="fixed bottom-20 left-2 lg:left-72 lg:right-auto mr-2 z-50">
       <Alert elevation={6} variant="filled" severity="info">
         {language.dictionary.updateAvailable}
       </Alert>
@@ -78,7 +101,10 @@ const App = () => {
    */
   const renderPage = (Component) => (
     <div className="h-full lg:ml-56 mb-10 lg:mb-0 bg-white z-50 text-darkGrey">
-      <Component onSetTitle={(title) => setPageTitle(title)} />
+      <Component
+        onSetTitle={(title) => setPageTitle(title)}
+        onPageView={(title) => handlePageView(title)}
+      />
     </div>
   );
 
@@ -103,6 +129,7 @@ const App = () => {
                 <Route path="/help" exact component={() => renderPage(Help)} />
                 <Route component={() => renderPage(NoMatch)} />
               </Switch>
+              <CookieNotice onConsent={() => setCookieConsent(getCookieConsentValue())} />
             </ThemeProvider>
           </PageContext.Provider>
         </LanguageContext.Provider>

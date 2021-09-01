@@ -17,7 +17,7 @@ const FilterButton = ({ openFilter, filter, onOpenFilter }) => {
             <>
                 <div className="lg:hidden fixed bottom-16 right-2 z-50 h-16">
                     <Fab
-                        variant="round"
+                        variant="circular"
                         color="secondary"
                         onClick={() => onOpenFilter(false)}
                     >
@@ -32,7 +32,7 @@ const FilterButton = ({ openFilter, filter, onOpenFilter }) => {
                         color="primary"
                         onClick={() => onOpenFilter(false)}
                     >
-                        <Close fontSize="default" />
+                        <Close fontSize="medium" />
                     </IconButton>
                 </div>
             </>
@@ -53,7 +53,7 @@ const FilterButton = ({ openFilter, filter, onOpenFilter }) => {
                         }}
                     >
                         <Fab
-                            variant="round"
+                            variant="circular"
                             color="secondary"
                             onClick={() => onOpenFilter(true)}
                         >
@@ -72,7 +72,7 @@ const FilterButton = ({ openFilter, filter, onOpenFilter }) => {
                         }}
                     >
                         <Fab
-                            variant="round"
+                            variant="circular"
                             color="secondary"
                             onClick={() => onOpenFilter(true)}
                             style={{ boxShadow: 'none' }}
@@ -87,9 +87,9 @@ const FilterButton = ({ openFilter, filter, onOpenFilter }) => {
 
     return (
         <>
-            <div className="lg:hidden fixed bottom-16 right-2 z-50 h-16">
+            <div className="lg:hidden fixed bottom-16 right-2 z-40 h-16">
                 <Fab
-                    variant="round"
+                    variant="circular"
                     color="secondary"
                     onClick={() => onOpenFilter(true)}
                 >
@@ -104,7 +104,7 @@ const FilterButton = ({ openFilter, filter, onOpenFilter }) => {
                     color="primary"
                     onClick={() => onOpenFilter(true)}
                 >
-                    <FilterList fontSize="default" />
+                    <FilterList fontSize="medium" />
                 </IconButton>
             </div>
         </>

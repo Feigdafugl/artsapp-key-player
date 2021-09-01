@@ -14,7 +14,7 @@ import ConfirmDelete from '../dialogs/ConfirmDelete';
 /**
  * Render downloads page
  */
-const Downloads = ({ onSetTitle }) => {
+const Downloads = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
     const history = useHistory();
     const [downloadedKeys, setDownloadedKeys] = useState(undefined);
@@ -64,10 +64,11 @@ const Downloads = ({ onSetTitle }) => {
     }, [collections]);
 
     /**
-     * Scroll to top on launch
+     * Scroll to top on launch and track page view if consent is given
      */
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        onPageView(language.dictionary.downloads);
     }, []);
 
     /**
@@ -145,7 +146,7 @@ const Downloads = ({ onSetTitle }) => {
             ) : <p className="p-4">{language.dictionary.noOfflineKeys}</p>}
             <div className="lg:hidden fixed bottom-16 right-2 z-50 h-16">
                 <Fab
-                    variant="round"
+                    variant="circular"
                     color="secondary"
                     disabled={!online}
                     onClick={() => setOpenKeyList(true)}

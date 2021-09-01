@@ -5,10 +5,18 @@ import LanguageContext from '../../context/LanguageContext';
 /**
  * Render help page
  */
-const Help = ({ onSetTitle }) => {
+const Help = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
     const location = useLocation();
     const [content, setContent] = useState(undefined);
+
+    /**
+     * Scroll to top on launch and track page view if consent is given
+     */
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        onPageView(language.dictionary.help);
+    }, []);
 
     /**
      * Set help content based on previous page

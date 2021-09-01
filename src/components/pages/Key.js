@@ -19,7 +19,7 @@ import initialize from '../../utils/key';
 /**
  * Render key player page
  */
-const Key = ({ onSetTitle }) => {
+const Key = ({ onSetTitle, onPageView }) => {
     const worker = new WebWorker();
     const { language } = useContext(LanguageContext);
     const { keyId } = useParams();
@@ -36,6 +36,13 @@ const Key = ({ onSetTitle }) => {
     const [offline, setOffline] = useState(undefined);
 
     /**
+     * Scroll to top on launch
+     */
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
+    /**
      * Get key from API
      *
      * @param {string} id Key ID
@@ -47,9 +54,11 @@ const Key = ({ onSetTitle }) => {
                 element = await getExternalKey(keyId);
             } else element = await getKey(keyId);
             onSetTitle(getLanguage(element.title, language.language.split('_')[0]));
+            onPageView(getLanguage(element.title, language.language.split('_')[0]));
         } else if (revisionId) {
             element = await getKeyRevision(revisionId);
             onSetTitle(language.dictionary.headerPreview);
+            onPageView(language.dictionary.headerPreview);
         }
         return element;
     };
@@ -115,13 +124,6 @@ const Key = ({ onSetTitle }) => {
             }
         } else setShowProgress(false);
     }, [key, keyId, location]);
-
-    /**
-     * Scroll to top on launch
-     */
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, []);
 
     /**
      * Remove all selected states for the character

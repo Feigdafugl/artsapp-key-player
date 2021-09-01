@@ -46,6 +46,8 @@
     "btnRemoveAll": "Remove all",
     "btnAboutKey": "About key",
     "btnToggleOperator": "Toggle operator",
+    "btnAccept": "Accept",
+    "btnReject": "Reject",
     "btnUpdate": "Update",
     "labelChange": "(change)",
     "labelLanguage": "Language",
@@ -122,5 +124,8 @@
     "labelLocal": "Local:",
     "labelRegional": "Regional:",
     "labelNational": "National:",
+    "cookieHeader": "Cookie Consent",
+    "cookieNotice": "This website uses cookies from Google Analytics to track how the website is being used.",
+    "cookieAccept": "By clicking \"Accept\", you agree to our use of cookies.",
     "updateAvailable": "An updated version of ArtsApp is available. Close all tabs and re-open ArtsApp to activate the new version."
 }

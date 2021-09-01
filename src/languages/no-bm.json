@@ -46,6 +46,8 @@
     "btnRemoveAll": "Fjern alle",
     "btnAboutKey": "Om nøkkelen",
     "btnToggleOperator": "Bytt operator",
+    "btnAccept": "Aksepter",
+    "btnReject": "Avslå",
     "btnUpdate": "Oppdater",
     "labelChange": "(endre)",
     "labelLanguage": "Språk",
@@ -122,5 +124,8 @@
     "labelLocal": "Lokalt:",
     "labelRegional": "Regionalt:",
     "labelNational": "Nasjonalt:",
+    "cookieHeader": "Samtykke til informasjonskapsler",
+    "cookieNotice": "Dette nettstedet bruker informasjonskapsler fra Google Analytics til å analysere hvordan nettstedet brukes.",
+    "cookieAccept": "Ved å klikke \"Aksepter\", godtar du vilkårene for bruk av informasjonskapsler.",
     "updateAvailable": "En oppdatert versjon av ArtsApp er tilgjengelig. Lukk alle faner og åpne ArtsApp på nytt for å aktivere den nye versjonen."
 }

@@ -85,7 +85,7 @@ const KeyOptionsButton = ({
                             color="primary"
                             onClick={() => handleClick(1)}
                         >
-                            <InfoOutlined fontSize="default" />
+                            <InfoOutlined fontSize="medium" />
                         </IconButton>
                     </span>
                 )}
@@ -96,7 +96,7 @@ const KeyOptionsButton = ({
                     color="primary"
                     onClick={() => handleClick(0)}
                 >
-                    <History fontSize="default" />
+                    <History fontSize="medium" />
                 </IconButton>
             </div>
         </>

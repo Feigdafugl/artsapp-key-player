@@ -6,11 +6,19 @@ import ObservationList from '../components/lists/ObservationList';
 /**
  * Render observations page
  */
-const Observations = ({ onSetTitle }) => {
+const Observations = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
     const history = useHistory();
     const [observations, setObservations] = useState(undefined);
     const [error, setError] = useState(undefined);
+
+    /**
+     * Scroll to top on launch and track page view if consent is given
+     */
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        onPageView(language.dictionary.observations);
+    }, []);
 
     /**
      * Get observations from local storage
@@ -27,13 +35,6 @@ const Observations = ({ onSetTitle }) => {
             }
         }
     }, [observations]);
-
-    /**
-     * Scroll to top on launch
-     */
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, []);
 
     return (
         <div className="py-14 lg:pt-16 lg:w-10/12 m-auto overflow-hidden">

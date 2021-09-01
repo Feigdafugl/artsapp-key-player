@@ -13,7 +13,7 @@ import { getKeysFromDatabase } from '../../utils/db';
 /**
  * Render keys page
  */
-const Keys = ({ onSetTitle }) => {
+const Keys = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
     const history = useHistory();
     const [keys, setKeys] = useState(undefined);
@@ -26,6 +26,14 @@ const Keys = ({ onSetTitle }) => {
     const [groups, setGroups] = useState(undefined);
     const [collections, setCollections] = useState(undefined);
     const [online, setOnline] = useState(navigator.onLine);
+
+    /**
+     * Scroll to top on launch and track page view if consent is given
+     */
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        onPageView(language.dictionary.keys);
+    }, []);
 
     /**
      * Get keys from ArtsApp and ADB API

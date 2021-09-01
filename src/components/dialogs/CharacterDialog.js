@@ -147,7 +147,7 @@ const CharacterDialog = ({
                             color="primary"
                             onClick={() => handleRemoveState()}
                         >
-                            <History fontSize="default" />
+                            <History fontSize="medium" />
                         </IconButton>
                     </span>
                     <Button

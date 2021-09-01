@@ -59,7 +59,7 @@ const KeyFilter = ({
             role="button"
             tabIndex={0}
         >
-            <Collapse in={open} collapsedHeight={0}>
+            <Collapse in={open} collapsedSize={0}>
                 <Paper
                     elevation={4}
                     className="h-80 p-4 relative"
