@@ -44,7 +44,7 @@ const Observations = ({ onSetTitle, onPageView }) => {
                     error={error}
                     onClickListItem={(observation) => history.push(`observations/${observation.id}`)}
                 />
-            ) : <p className="p-4">{language.dictionary.noSavedObservations}</p>}
+            ) : <p className="es:text-center p-4">{language.dictionary.noSavedObservations}</p>}
         </div>
     );
 };

@@ -24,7 +24,11 @@ const KeyInfoAccordion = ({ keyInfo, keys, organizations }) => {
         <AccordionDetails>
             <ul className="p-4">
                 {keyInfo.classification.map(
-                    (element) => <li key={element.id}>{element.scientificName}</li>,
+                    (element) => (
+                        <li key={element.id || element.Id}>
+                            {element.scientificName || element.ScientificName}
+                        </li>
+                    ),
                 )}
             </ul>
         </AccordionDetails>
@@ -118,12 +122,17 @@ const KeyInfoAccordion = ({ keyInfo, keys, organizations }) => {
                                     <dd>{keyInfo.version}</dd>
                                 </>
                             )}
-                            <dt className="float-left w-40 font-light tracking-wide">
-                                {language.dictionary.labelModified}
-                            </dt>
-                            <dd>
-                                {keyInfo.lastModified && formatDate(keyInfo.lastModified, true)}
-                            </dd>
+                            {keyInfo.lastModified && (
+                                <>
+                                    <dt className="float-left w-40 font-light tracking-wide">
+                                        {language.dictionary.labelModified}
+                                    </dt>
+                                    <dd>
+                                        {keyInfo.lastModified
+                                            && formatDate(keyInfo.lastModified, true)}
+                                    </dd>
+                                </>
+                            )}
                         </dl>
                     </div>
                 </AccordionDetails>

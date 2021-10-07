@@ -35,7 +35,7 @@ const TitleBar = ({ title }) => {
                     ? <BackButton onClick={() => history.goBack()} />
                     : <LogoButton onClick={() => history.push('/about')} />}
             </span>
-            <h1 className="font-normal ml-2 w-48 lg:w-96 overflow-hidden overflow-ellipsis whitespace-nowrap">
+            <h1 className="font-normal ml-2 mr-10 overflow-hidden overflow-ellipsis whitespace-nowrap">
                 {title}
             </h1>
         </Toolbar>

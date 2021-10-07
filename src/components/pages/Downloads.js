@@ -143,7 +143,7 @@ const Downloads = ({ onSetTitle, onPageView }) => {
                     onClickInfo={(id) => history.push(`/info/${id}?offline=true`)}
                     onClickRemove={(id) => setConfirmDelete(id)}
                 />
-            ) : <p className="p-4">{language.dictionary.noOfflineKeys}</p>}
+            ) : <p className="es:text-center p-4">{language.dictionary.noOfflineKeys}</p>}
             <div className="lg:hidden fixed bottom-16 right-2 z-50 h-16">
                 <Fab
                     variant="circular"

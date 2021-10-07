@@ -182,7 +182,7 @@ const KeyList = ({
                         </ListItem>
                     ))}
                 </List>
-                {filteredKeys.length === 0 && <p>{language.dictionary.noMatchingKeys}</p>}
+                {filteredKeys.length === 0 && <p className="es:text-center">{language.dictionary.noMatchingKeys}</p>}
             </div>
         </>
     );
