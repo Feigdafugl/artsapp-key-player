@@ -26,9 +26,9 @@ const ImageSwiper = ({
             initialSlide={index || 0}
             className="mt-10"
         >
-            {media && media.map((element) => (
+            {media && media.map((element, index) => (
                 <ImageSlide
-                    key={element.id || element}
+                    key={element.id || index}
                     media={element}
                     index={index}
                     offline={offline}

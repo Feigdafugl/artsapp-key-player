@@ -17,12 +17,12 @@ const toggleDismiss = (taxon, taxonId) => {
  * @returns {Array} Character alternatives
  */
 export const getAlternatives = (character) => {
-    let { alternatives } = character;
-    if (!alternatives) {
-        alternatives = character.states;
+    let { states } = character;
+    if (!states) {
+        states = character.alternatives;
     }
-    if (!Array.isArray(alternatives)) return [alternatives];
-    return alternatives;
+    if (!Array.isArray(states)) return [states];
+    return states;
 };
 
 // calculates the relevances of a taxon and it's children
@@ -330,7 +330,8 @@ const answer = (key, alternativeId, value) => {
 
 const getAnswer = (alternativeId, characters) => {
     for (const character of characters) {
-        const alternative = character.alternatives.find(
+        const alternatives = getAlternatives(character);
+        const alternative = alternatives.find(
             (a) => a.id === alternativeId,
         );
         if (alternative) {

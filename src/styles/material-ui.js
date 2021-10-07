@@ -72,8 +72,8 @@ const materialTheme = createMuiTheme({
         MuiDialogContent: {
             root: {
                 paddingTop: 0,
-                paddingLeft: '1rem',
-                paddingRight: '1rem',
+                paddingLeft: '0.6rem',
+                paddingRight: '0.6rem',
             },
         },
         MUIRichTextEditor: {

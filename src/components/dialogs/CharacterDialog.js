@@ -195,7 +195,9 @@ const CharacterDialog = ({
             onClose={() => onClose()}
         >
             <DialogTitle disableTypography>
-                <h2 className="text-base font-bold">{character && getLanguage(character.title, language.language.split('_')[0])}</h2>
+                <h2 className="text-base font-bold mr-6">
+                    {character && getLanguage(character.title, language.language.split('_')[0])}
+                </h2>
             </DialogTitle>
             <DialogContent>
                 <CloseButton onClick={() => onClose()} />

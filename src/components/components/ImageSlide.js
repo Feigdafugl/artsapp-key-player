@@ -67,7 +67,9 @@ const ImageSlide = ({ media, offline }) => {
             if (blob instanceof Blob) img = URL.createObjectURL(blob);
             //  URL.revokeObjectURL(img);
         } else if (typeof element === 'object') {
-            if (element.mediaElement) {
+            if (element.url) {
+                img = element.url;
+            } else if (element.mediaElement) {
                 if (element.mediaElement.length > 1) {
                     img = element.mediaElement[1].url;
                 } else if (element.mediaElement.length > 0) {

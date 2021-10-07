@@ -70,7 +70,7 @@ const StateList = ({
             />
             <ListItemText
                 primary={(
-                    <div className="lg:px-3 text-sm lg:text-base mr-20 max-h-20">
+                    <div className="lg:px-3 text-sm lg:text-base ml-2 max-h-20">
                         {getLanguage(state.title, language.language.split('_')[0])}
                     </div>
                 )}
