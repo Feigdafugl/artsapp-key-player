@@ -9,7 +9,8 @@ import {
  * @returns {Object} Initialized key content
  */
 export const initKeyContent = (element) => {
-    const tmpKey = initKey(element, true);
+    const mode = element.mode || parseInt(process.env.REACT_APP_DEFAULT_KEY_MODE, 10);
+    const tmpKey = initKey(element, mode === 2);
     return tmpKey;
 };
 

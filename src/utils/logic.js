@@ -503,10 +503,10 @@ export const getAllTaxonIds = (taxa) => {
  * Deducts the answers for unanswered alternatives and marks the character relevant/irrelevant
  *
  * @param {Object} key Key
- * @param {boolean} includeAll False if only return characters that are relevant for all taxa
+ * @param {boolean} relevantOnly True if return only characters that are relevant for all taxa
  * @returns {Object} Updated key object
  */
-export const inferAlternatives = (key, includeAll) => {
+export const inferAlternatives = (key, relevantOnly) => {
     const relevantStatements = key.statements.filter(
         (sm) => isRelevantTaxon(sm.taxonId, key.taxa),
     );
@@ -584,7 +584,7 @@ export const inferAlternatives = (key, includeAll) => {
         );
         if (!alternatives.some((alternative) => alternative.isAnswered)
             && (!alternatives.some((alternative) => alternative.answerIs === undefined)
-                || (!includeAll && !isRelevantForAllTaxa(key.taxa, characterStatements))
+                || (relevantOnly && !isRelevantForAllTaxa(key.taxa, characterStatements))
             )
         ) {
             character.relevant = false;
@@ -603,15 +603,15 @@ export const inferAlternatives = (key, includeAll) => {
  *
  * @param {Object} key Key object
  * @param {Array} answers Array of answers (state IDs and value)
- * @param {boolean} includeAll False if only return characters that are relevant for all taxa
+ * @param {boolean} relevantOnly True if return only characters that are relevant for all taxa
  * @returns {Object} Updated key object
  */
-export const giveAnswers = (key, answers, includeAll) => {
+export const giveAnswers = (key, answers, relevantOnly) => {
     let tmpKey = { ...key };
     answers.forEach((a) => { tmpKey = answer(key, a.id, a.value); });
 
     // Set relevant characters/alternatives
-    tmpKey = inferAlternatives(tmpKey, includeAll);
+    tmpKey = inferAlternatives(tmpKey, relevantOnly);
     tmpKey.relevantTaxaCount = getRelevantTaxaCount(tmpKey.taxa);
 
     // Show the results if there is one taxon left, or no questions left to ask
@@ -711,15 +711,15 @@ export const initElement = (initialElement, mediaElements, persons, organization
  *
  * @param {Object} key Key object
  * @param {string} taxonId Taxon ID
- * @param {boolean} includeAll False if only return characters that are relevant for all taxa
+ * @param {boolean} relevantOnly True if return only characters that are relevant for all taxa
  * @returns {Object} Updated key object
  */
-export const toggleTaxonDismissed = (key, taxonId, includeAll) => {
+export const toggleTaxonDismissed = (key, taxonId, relevantOnly) => {
     let tmpKey = { ...key };
     tmpKey.taxa = tmpKey.taxa.map((taxon) => toggleDismiss(taxon, taxonId));
     tmpKey.taxa = setTaxonRelevances(tmpKey.taxa);
     tmpKey = removeInferrences(tmpKey);
-    tmpKey = inferAlternatives(tmpKey, includeAll);
+    tmpKey = inferAlternatives(tmpKey, relevantOnly);
     tmpKey.relevantTaxaCount = getRelevantTaxaCount(tmpKey.taxa);
     if (tmpKey.relevantTaxaCount === 1) {
         tmpKey.results = getResultTaxa(tmpKey.taxa);
@@ -760,10 +760,10 @@ export const filterTaxaByNames = (stateObject, taxaToKeep, keepCommonTaxon) => {
  * Initialize key object for identification process
  *
  * @param {Object} key Key in JSON format
- * @param {boolean} includeAll False if only return characters that are relevant for all taxa
+ * @param {boolean} relevantOnly True if return only characters that are relevant for all taxa
  * @returns {Object} Updated key object
  */
-export const initKey = (key, includeAll) => {
+export const initKey = (key, relevantOnly) => {
     let tmpKey = { ...key };
     if (!tmpKey.statements || !tmpKey.characters || !tmpKey.taxa) {
         return undefined;
@@ -813,7 +813,7 @@ export const initKey = (key, includeAll) => {
     tmpKey.statements = tmpKey.statements.concat(addStatements);
     // tmpKey = inferAlternatives(tmpKey);
     // Give an empty answer to trigger logic
-    tmpKey = giveAnswers(tmpKey, [], includeAll);
+    tmpKey = giveAnswers(tmpKey, [], relevantOnly);
     tmpKey.taxaCount = tmpKey.relevantTaxaCount;
     return tmpKey;
 };
