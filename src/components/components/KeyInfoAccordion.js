@@ -85,7 +85,7 @@ const KeyInfoAccordion = ({ keyInfo, keys, organizations }) => {
                 <AccordionDetails>
                     <PublisherList
                         publishers={keyInfo.publishers}
-                        organizations={organizations}
+                        organizations={keyInfo.organizations || organizations}
                     />
                 </AccordionDetails>
             </Accordion>
@@ -99,7 +99,10 @@ const KeyInfoAccordion = ({ keyInfo, keys, organizations }) => {
                     {language.dictionary.labelContributors}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <ContributorList contributors={keyInfo.contributors} />
+                    <ContributorList
+                        contributors={keyInfo.contributors || keyInfo.creators}
+                        persons={keyInfo.persons}
+                    />
                 </AccordionDetails>
             </Accordion>
             <Accordion>

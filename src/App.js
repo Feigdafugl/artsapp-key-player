@@ -100,7 +100,7 @@ const App = () => {
    * @param {Object} Component Component to render
    */
   const renderPage = (Component) => (
-    <div className="h-full lg:ml-56 mb-10 lg:mb-0 bg-white z-50 text-darkGrey">
+    <div className="h-full lg:ml-44 mb-10 lg:mb-0 bg-white z-50 text-darkGrey">
       <Component
         onSetTitle={(title) => setPageTitle(title)}
         onPageView={(title) => handlePageView(title)}

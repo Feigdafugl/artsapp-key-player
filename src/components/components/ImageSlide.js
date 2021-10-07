@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
 import SwiperCore, {
     Pagination, Navigation,
@@ -6,9 +6,8 @@ import SwiperCore, {
 import 'swiper/swiper.min.css';
 import 'swiper/components/pagination/pagination.min.css';
 import 'swiper/components/navigation/navigation.min.css';
-import LanguageContext from '../../context/LanguageContext';
-import { getLanguage } from '../../utils/language';
 import { getMediaFromDatabase } from '../../utils/db';
+import ImageInfo from './ImageInfo';
 
 SwiperCore.use([Pagination, Navigation]);
 
@@ -16,43 +15,7 @@ SwiperCore.use([Pagination, Navigation]);
  * Render image swiper
  */
 const ImageSlide = ({ media, offline }) => {
-    const { language } = useContext(LanguageContext);
     const [imageUrl, setImageUrl] = useState(undefined);
-
-    /**
-     * Render image info
-     *
-     * @param {Object} element Image
-     * @returns JSX
-     */
-    const renderImageInfo = (element) => (
-        <dl className="absolute bottom-6 w-full bg-gray-300 bg-opacity-80 p-2 rounded">
-            {element.title && (
-                <>
-                    <dt className="float-left w-20 font-light tracking-wide">
-                        {language.dictionary.labelTitle}
-                    </dt>
-                    <dd>{getLanguage(element.title, language.language.split('_')[0])}</dd>
-                </>
-            )}
-            {element.creators && element.creators.length > 0 && (
-                <>
-                    <dt className="float-left w-20 font-light tracking-wide">
-                        {language.dictionary.labelCreators}
-                    </dt>
-                    <dd>{element.creators.map((creator, index) => `${index === 0 ? '' : ', '}${creator}`)}</dd>
-                </>
-            )}
-            {element.license && (
-                <>
-                    <dt className="float-left w-20 font-light tracking-wide">
-                        {language.dictionary.labelLicense}
-                    </dt>
-                    <dd>{element.license}</dd>
-                </>
-            )}
-        </dl>
-    );
 
     /**
      * Render image slide
@@ -97,7 +60,7 @@ const ImageSlide = ({ media, offline }) => {
                         src={imageUrl}
                     />
                     {(media.title || media.license || (media.creators && media.creators.length > 0))
-                        && renderImageInfo(media)}
+                        && <ImageInfo image={media} />}
                 </>
             )}
         </SwiperSlide>
