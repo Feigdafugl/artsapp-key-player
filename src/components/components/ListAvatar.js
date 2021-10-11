@@ -26,7 +26,7 @@ const ListAvatar = ({
     id, media, size, offline,
 }) => {
     const classes = useStyles();
-    const [imageUrl, setImageUrl] = useState(undefined);
+    const [thumbnailUrl, setThumbnailUrl] = useState(undefined);
     const [openGallery, setOpenGallery] = useState(undefined);
 
     /**
@@ -38,7 +38,7 @@ const ListAvatar = ({
         e.stopPropagation();
         if (id) {
             setOpenGallery([id]);
-        } else setOpenGallery(media);
+        } else setOpenGallery(media.filter((element) => element.width !== 128));
     };
 
     /**
@@ -61,7 +61,7 @@ const ListAvatar = ({
                 } else img = element[0].url;
             }
         }
-        setImageUrl(img);
+        setThumbnailUrl(img);
     };
 
     /**
@@ -71,45 +71,43 @@ const ListAvatar = ({
         setUrl(media);
     }, [media]);
 
+    /**
+     * Render avatar icon
+     *
+     * @param {Object} style MUI style class
+     * @param {boolean} clickable True if clickable
+     * @returns JSX
+     */
+    const renderAvatar = (style, clickable) => {
+        if (clickable) {
+            return (
+                <Avatar
+                    alt="Avatar"
+                    src={thumbnailUrl}
+                    variant="rounded"
+                    className={`${style} cursor-pointer m-auto`}
+                    onClick={handleClick}
+                />
+            );
+        }
+        return (
+            <Avatar
+                alt="Avatar"
+                variant="rounded"
+                className={style}
+            >
+                <ImageIcon color="primary" />
+            </Avatar>
+        );
+    };
+
     return (
         <>
             <ListItemAvatar className={`m-auto ${size !== 'small' && 'lg:hidden'}`}>
-                {imageUrl ? (
-                    <Avatar
-                        alt="Avatar"
-                        src={imageUrl}
-                        variant="rounded"
-                        className={`${classes.small} cursor-pointer m-auto`}
-                        onClick={handleClick}
-                    />
-                ) : (
-                    <Avatar
-                        alt="Avatar"
-                        variant="rounded"
-                        className={classes.small}
-                    >
-                        <ImageIcon color="primary" />
-                    </Avatar>
-                )}
+                {thumbnailUrl ? renderAvatar(classes.small, true) : renderAvatar(classes.small)}
             </ListItemAvatar>
             <ListItemAvatar className={`m-auto hidden ${size !== 'small' && 'lg:inline'}`}>
-                {imageUrl ? (
-                    <Avatar
-                        alt="Avatar"
-                        src={imageUrl}
-                        variant="rounded"
-                        className={`${classes.large} cursor-pointer m-auto`}
-                        onClick={handleClick}
-                    />
-                ) : (
-                    <Avatar
-                        alt="Avatar"
-                        variant="rounded"
-                        className={classes.large}
-                    >
-                        <ImageIcon color="primary" />
-                    </Avatar>
-                )}
+                {thumbnailUrl ? renderAvatar(classes.large, true) : renderAvatar(classes.large)}
             </ListItemAvatar>
             <GalleryDialog
                 media={openGallery}

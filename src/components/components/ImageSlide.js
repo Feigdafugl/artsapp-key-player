@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { SwiperSlide } from 'swiper/react';
 import SwiperCore, {
     Pagination, Navigation,
 } from 'swiper/core';
@@ -8,6 +7,7 @@ import 'swiper/components/pagination/pagination.min.css';
 import 'swiper/components/navigation/navigation.min.css';
 import { getMediaFromDatabase } from '../../utils/db';
 import ImageInfo from './ImageInfo';
+import ProgressIndicator from './ProgressIndicator';
 
 SwiperCore.use([Pagination, Navigation]);
 
@@ -16,6 +16,7 @@ SwiperCore.use([Pagination, Navigation]);
  */
 const ImageSlide = ({ media, offline }) => {
     const [imageUrl, setImageUrl] = useState(undefined);
+    const [load, setLoad] = useState(true);
 
     /**
      * Render image slide
@@ -51,19 +52,21 @@ const ImageSlide = ({ media, offline }) => {
     }, [media]);
 
     return (
-        <SwiperSlide key={media.id || media}>
+        <>
             {imageUrl && (
                 <>
                     <img
                         alt="Entity media"
                         className="m-auto"
                         src={imageUrl}
+                        onLoad={() => setLoad(false)}
                     />
                     {(media.title || media.license || (media.creators && media.creators.length > 0))
                         && <ImageInfo image={media} />}
                 </>
             )}
-        </SwiperSlide>
+            <ProgressIndicator open={load} />
+        </>
     );
 };
 

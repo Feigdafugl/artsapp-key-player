@@ -1,5 +1,5 @@
 import React from 'react';
-import { Swiper } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, {
     Pagination, Navigation,
 } from 'swiper/core';
@@ -17,25 +17,26 @@ SwiperCore.use([Pagination, Navigation]);
 const ImageSwiper = ({
     media, index, offline, onClose,
 }) => (
-    <div className="h-full">
+    <div className="h-full my-10">
         <CloseButton onClick={() => onClose()} />
-        <Swiper
-            navigation
-            loop
-            zoom
-            initialSlide={index || 0}
-            className="mt-10"
-        >
-            {media && media.map((element, index) => (
-                <ImageSlide
-                    key={element.id || index}
-                    media={element}
-                    index={index}
-                    offline={offline}
-                    onClose={onClose}
-                />
-            ))}
-        </Swiper>
+        {media && (
+            <Swiper
+                navigation={media.length > 1}
+                loop={media.length > 1}
+                zoom
+                initialSlide={index || 0}
+            >
+                {media.map((element, i) => (
+                    <SwiperSlide key={i}>
+                        <ImageSlide
+                            media={element}
+                            offline={offline}
+                            onClose={onClose}
+                        />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        )}
     </div>
 );
 
