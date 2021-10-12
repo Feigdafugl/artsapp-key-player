@@ -88,40 +88,42 @@ const Key = ({ onSetTitle, onPageView }) => {
     };
 
     /**
+     * Get key JSON from device or API
+     */
+    const getKeyJSON = async () => {
+        const params = new URLSearchParams(location.search);
+        setOffline(params.get('offline') === 'true');
+        if (params.get('offline') === 'true') {
+            try {
+                const tmpKey = await getKeyFromDatabase(keyId);
+                try {
+                    const init = await initialize(tmpKey);
+                    updateRemainingCharacters(init, init.key.id);
+                    onSetTitle(getLanguage(tmpKey.title, language.language.split('_')[0]));
+                } catch (err) {
+                    localStorage.removeItem(keyId);
+                    setError(language.dictionary.storageError);
+                }
+            } catch (err) {
+                setError(language.dictionary.storageError);
+            }
+        } else {
+            try {
+                const tmpKey = await getKeyFromAPI();
+                const init = await initialize(tmpKey);
+                updateRemainingCharacters(init, init.key.id);
+            } catch (err) {
+                setError(language.dictionary.internalAPIError);
+            }
+        }
+    };
+
+    /**
      * Get key from ArtsApp API, ADB API or device
      */
     useEffect(() => {
         if (!key) {
-            const query = location.search.split('=');
-            if (query.length > 0 && query[1] === 'true') {
-                getKeyFromDatabase(keyId).then((element) => {
-                    initialize(element).then((init) => {
-                        updateRemainingCharacters(init, init.key.id);
-                        onSetTitle(getLanguage(element.title, language.language.split('_')[0]));
-                    }).catch(() => {
-                        localStorage.removeItem(keyId);
-                        setError(language.dictionary.storageError);
-                        setShowProgress(false);
-                    });
-                    setOffline(true);
-                }).catch(() => {
-                    setShowProgress(false);
-                    setError(language.dictionary.storageError);
-                });
-            } else {
-                getKeyFromAPI().then((element) => {
-                    initialize(element).then((init) => {
-                        updateRemainingCharacters(init, init.key.id);
-                    }).catch(() => {
-                        setError(language.dictionary.internalAPIError);
-                        setShowProgress(false);
-                    });
-                    setOffline(false);
-                }).catch(() => {
-                    setShowProgress(false);
-                    setError(language.dictionary.internalAPIError);
-                });
-            }
+            getKeyJSON();
         } else setShowProgress(false);
     }, [key, keyId, location]);
 

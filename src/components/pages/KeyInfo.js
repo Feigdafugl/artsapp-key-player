@@ -40,73 +40,81 @@ const KeyInfo = ({ onSetTitle, onPageView }) => {
     }, []);
 
     /**
+     * Set key info state and page title
+     *
+     * @param {Object} info Key info
+     */
+    const handleSetKeyInfo = (info) => {
+        setKey(info);
+        onSetTitle(getLanguage(info.title, language.language.split('_')[0]));
+        onPageView(`Info - ${getLanguage(info.title, language.language.split('_')[0])}`);
+    };
+
+    /**
+     * Get list of keys and organizations
+     */
+    const getKeyMetadata = async () => {
+        try {
+            const tmpKeys = await getKeys();
+            const tmpOrgs = getOrganizations(language.language.split('_')[0]);
+            setKeys(tmpKeys);
+            setOrganizations(tmpOrgs);
+        } catch (err) {
+            setError(language.dictionary.noConnection);
+        }
+    };
+
+    /**
+     * Get info for key
+     */
+    const getKey = async () => {
+        const params = new URLSearchParams(location.search);
+        setOffline(params.get('offline') === 'true');
+        let keyInfo;
+        if (params.get('offline') === 'true') {
+            try {
+                keyInfo = await getKeyInfoFromDatabase(keyId);
+                if (keyInfo[1] && (!keyInfo[0] || language.language.split('_')[0] === 'en')) {
+                    keyInfo = keyInfo[1];
+                } else keyInfo = keyInfo[0];
+            } catch (err) {
+                setError(language.dictionary.storageError);
+            }
+        } else if (keyId.split('.').length > 1) {
+            try {
+                keyInfo = await getExternalKey(keyId);
+            } catch (err) {
+                setError(language.dictionary.internalAPIError);
+            }
+        } else {
+            try {
+                keyInfo = await getKeyInfo(keyId, language.language.split('_')[0]);
+            } catch (errLang) {
+                try {
+                    keyInfo = await getKeyInfo(keyId, language.language.split('_')[0] === 'en' ? 'no' : 'en');
+                } catch (err) {
+                    setError(language.dictionary.internalAPIError);
+                }
+            }
+        }
+        if (keyInfo) handleSetKeyInfo(keyInfo);
+        await getKeyMetadata();
+        setShowProgress(false);
+    };
+
+    /**
      * Get key from API
      */
     useEffect(() => {
-        if (!key) {
-            const query = location.search.split('=');
-            if (query.length > 0 && query[1] === 'true') {
-                getKeyInfoFromDatabase(keyId).then((element) => {
-                    if (element[1] && (!element[0] || language.language.split('_')[0] === 'en')) {
-                        setKey(element[1]);
-                        onSetTitle(getLanguage(element[1].title, language.language.split('_')[0]));
-                        onPageView(`Info - ${getLanguage(element[1].title, language.language.split('_')[0])}`);
-                    } else {
-                        setKey(element[0]);
-                        onSetTitle(getLanguage(element[0].title, language.language.split('_')[0]));
-                        onPageView(`Info - ${getLanguage(element[0].title, language.language.split('_')[0])}`);
-                    }
-                    setOffline(true);
-                }).catch(() => {
-                    setError(language.dictionary.storageError);
-                    setShowProgress(false);
-                });
-            } else if (keyId.split('.').length > 1) {
-                getExternalKey(keyId).then((element) => {
-                    setKey(element);
-                    setOffline(false);
-                }).catch(() => {
-                    setError(language.dictionary.internalAPIError);
-                    setShowProgress(false);
-                });
-            } else {
-                getKeyInfo(keyId, language.language.split('_')[0]).then((element) => {
-                    setKey(element);
-                    onSetTitle(getLanguage(element.title, language.language.split('_')[0]));
-                    onPageView(`Info - ${getLanguage(element.title, language.language.split('_')[0])}`);
-                    setOffline(false);
-                }).catch(() => {
-                    getKeyInfo(keyId, language.language.split('_')[0] === 'en' ? 'no' : 'en').then((element) => {
-                        setKey(element);
-                        onSetTitle(getLanguage(element.title, language.language.split('_')[0]));
-                        onPageView(`Info - ${getLanguage(element.title, language.language.split('_')[0])}`);
-                        setOffline(false);
-                    }).catch(() => {
-                        setError(language.dictionary.internalAPIError);
-                        setShowProgress(false);
-                    });
-                });
-            }
-        }
-        if (!keys) {
-            getKeys().then((elements) => {
-                setKeys(elements);
-            }).catch(() => setError(language.dictionary.noConnection));
-        }
-        if (!organizations) {
-            getOrganizations(language.language.split('_')[0]).then((elements) => {
-                setOrganizations(elements);
-            }).catch(() => setError(language.dictionary.internalAPIError));
-        }
-        if (key) setShowProgress(false);
-    }, [keyId, key, keys, organizations]);
+        if (!key) getKey();
+    }, [keyId, key]);
 
     /**
      * Start identification
      */
     const handleStart = () => {
-        const query = location.search.split('=');
-        if (query.length > 0 && query[1] === 'true') {
+        const params = new URLSearchParams(location.search);
+        if (params.get('offline') === 'true') {
             history.push(`/keys/${keyId}?offline=true`);
         } else history.push(`/keys/${keyId}`);
     };
@@ -184,7 +192,7 @@ const KeyInfo = ({ onSetTitle, onPageView }) => {
     );
 
     return (
-        <div className="pt-14 lg:pl-14 h-screen overflow-y-auto">
+        <div className="pt-14 lg:pl-14 h-screen overflow-y-auto lg:ml-14">
             {error && <Alert className="mt-4 mx-2" elevation={6} variant="filled" severity="error">{error}</Alert>}
             {key && renderInfo()}
             {renderStartButton()}

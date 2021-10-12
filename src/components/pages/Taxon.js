@@ -96,74 +96,44 @@ const Taxon = ({ onSetTitle, onPageView }) => {
     };
 
     /**
+     * Get taxon and key from API
+     */
+    const getKeyTaxon = async () => {
+        const params = new URLSearchParams(location.search);
+        const keyId = params.get('key');
+        const revisionId = params.get('rev');
+        let tmpKey;
+        try {
+            if (keyId) {
+                setOffline(params.get('offline') === 'true');
+                if (params.get('offline') === 'true') {
+                    try {
+                        tmpKey = await getKeyFromDatabase(keyId);
+                    } catch (err) {
+                        setError(language.dictionary.storageError);
+                    }
+                } else if (keyId.split('.').length > 1) {
+                    tmpKey = await getExternalKey(keyId);
+                } else tmpKey = await getKey(keyId);
+            } else if (revisionId) {
+                tmpKey = await getKeyRevision(revisionId);
+            } else setError(language.dictionary.internalAPIError);
+            if (tmpKey) {
+                const init = await initialize(tmpKey);
+                if (init && init.key) handleSetTaxon(init.key, revisionId);
+            }
+        } catch (err) {
+            setError(language.dictionary.internalAPIError);
+        } finally {
+            setShowProgress(false);
+        }
+    };
+
+    /**
      * Get key and taxon from API
      */
     useEffect(() => {
-        if (!taxon) {
-            const keyId = new URLSearchParams(location.search).get('key');
-            const revisionId = new URLSearchParams(location.search).get('rev');
-            const off = new URLSearchParams(location.search).get('offline');
-            if (keyId) {
-                if (off) {
-                    getKeyFromDatabase(keyId).then((key) => {
-                        initialize(key).then((init) => {
-                            if (init && init.key) handleSetTaxon(init.key);
-                        }).catch(() => {
-                            setError(language.dictionary.internalAPIError);
-                            setShowProgress(false);
-                        });
-                        setOffline(true);
-                    }).catch(() => {
-                        setShowProgress(false);
-                        setError(language.dictionary.storageError);
-                    });
-                } else if (keyId.split('.').length > 1) {
-                    getExternalKey(keyId).then((key) => {
-                        initialize(key).then((init) => {
-                            if (init && init.key) handleSetTaxon(init.key);
-                        }).catch(() => {
-                            setError(language.dictionary.internalAPIError);
-                            setShowProgress(false);
-                        });
-                        setOffline(false);
-                    }).catch(() => {
-                        setError(language.dictionary.internalAPIError);
-                        setShowProgress(false);
-                    });
-                } else {
-                    getKey(keyId).then((key) => {
-                        initialize(key).then((init) => {
-                            if (init && init.key) handleSetTaxon(init.key);
-                        }).catch(() => {
-                            setError(language.dictionary.internalAPIError);
-                            setShowProgress(false);
-                        });
-                        setOffline(false);
-                    }).catch(() => {
-                        setError(language.dictionary.internalAPIError);
-                        setShowProgress(false);
-                    });
-                }
-            } else if (revisionId) {
-                getKeyRevision(revisionId).then((key) => {
-                    initialize(key).then((init) => {
-                        if (init && init.key) handleSetTaxon(init.key, true);
-                    }).catch(() => {
-                        setError(language.dictionary.internalAPIError);
-                        setShowProgress(false);
-                    });
-                    setPreview(true);
-                    setOffline(false);
-                }).catch(() => {
-                    setError(language.dictionary.internalAPIError);
-                    setShowProgress(false);
-                });
-            } else {
-                setError(language.dictionary.internalAPIError);
-                setShowProgress(false);
-            }
-        }
-        if (taxon) setShowProgress(false);
+        if (!taxon) getKeyTaxon();
     }, [taxonId, taxon]);
 
     /**
@@ -218,25 +188,19 @@ const Taxon = ({ onSetTitle, onPageView }) => {
         );
     };
 
-    const renderObservartions = (counts) => (
+    /**
+     * Render number of observations
+     *
+     * @param {Object} counts Number of observations
+     * @returns JSX
+     */
+    const renderObservations = (counts) => (
         <div>
             <h2 className="mt-4 text-base">{language.dictionary.observations}</h2>
             <ul className="flex">
-                <li>
-                    {language.dictionary.labelLocal}
-                    &nbsp;
-                    {counts.small}
-                </li>
-                <li className="ml-4">
-                    {language.dictionary.labelRegional}
-                    &nbsp;
-                    {counts.medium}
-                </li>
-                <li className="ml-4">
-                    {language.dictionary.labelNational}
-                    &nbsp;
-                    {counts.large}
-                </li>
+                <li>{`${language.dictionary.labelLocal} ${counts.small}`}</li>
+                <li className="ml-4">{`${language.dictionary.labelRegional} ${counts.medium}`}</li>
+                <li className="ml-4">{`${language.dictionary.labelNational} ${counts.large}`}</li>
             </ul>
         </div>
     );
@@ -244,7 +208,7 @@ const Taxon = ({ onSetTitle, onPageView }) => {
     return (
         <div className="py-14 px-4 lg:w-10/12 m-auto h-screen">
             {occurrences && occurrences.observations && occurrences.observations.Counts
-                && renderObservartions(occurrences.observations.Counts)}
+                && renderObservations(occurrences.observations.Counts)}
             {taxon && renderTaxonInfo()}
             {error && <Alert className="mt-4" elevation={6} variant="filled" severity="error">{error}</Alert>}
             {saved && (
@@ -258,7 +222,6 @@ const Taxon = ({ onSetTitle, onPageView }) => {
                         {position.latitude
                             ? language.dictionary.infoLocation
                             : language.dictionary.infoNoLocation}
-                        &nbsp;
                         <div className="inline-block">
                             <Button
                                 variant="text"
