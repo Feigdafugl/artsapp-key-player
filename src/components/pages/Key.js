@@ -110,7 +110,7 @@ const Key = ({ onSetTitle, onPageView }) => {
         } else {
             try {
                 const tmpKey = await getKeyFromAPI();
-                const init = await initialize(tmpKey);
+                const init = await initialize(tmpKey, revisionId);
                 updateRemainingCharacters(init, init.key.id);
             } catch (err) {
                 setError(language.dictionary.internalAPIError);

@@ -6,11 +6,12 @@ const worker = new WebWorker();
  * Initialize key
  *
  * @param {Object} element Key element
+ * @param {boolean} forceRefresh Pull key from API even if a local copy exists
  */
-const initialize = async (element) => {
+const initialize = async (element, forceRefresh) => {
     const storedKey = localStorage.getItem(element.id);
     let init;
-    if (storedKey && storedKey !== 'undefined') {
+    if (!forceRefresh && storedKey && storedKey !== 'undefined') {
         init = await worker.getCharacterState(JSON.parse(storedKey));
         return init;
     }
