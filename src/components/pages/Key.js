@@ -135,21 +135,25 @@ const Key = ({ onSetTitle, onPageView }) => {
     const handleResetCharacter = async (id) => {
         setShowProgress(true);
         let tmpKey = { ...key };
-        const states = getAlternatives(tmpKey.characters.find((character) => character.id === id));
-        const arr = [];
-        states.forEach((state) => {
-            if (state.isAnswered) arr.push(state);
-            state.selected = undefined;
-        });
-        if (arr.length > 0) {
-            tmpKey = await worker.setStateAnswers(
-                key,
-                arr.map((element) => ({ id: element.id })),
-                filterRelevant,
+        if (selectedCharacters.length > 1) {
+            const states = getAlternatives(
+                tmpKey.characters.find((character) => character.id === id),
             );
-            const init = await worker.getCharacterState(tmpKey);
-            tmpKey = await updateRemainingCharacters(init, key.id);
-        }
+            const arr = [];
+            states.forEach((state) => {
+                if (state.isAnswered) arr.push(state);
+                state.selected = undefined;
+            });
+            if (arr.length > 0) {
+                tmpKey = await worker.setStateAnswers(
+                    key,
+                    arr.map((element) => ({ id: element.id })),
+                    filterRelevant,
+                );
+                const init = await worker.getCharacterState(tmpKey);
+                tmpKey = await updateRemainingCharacters(init, key.id);
+            }
+        } else updateRemainingCharacters(undefined, key.id);
         return tmpKey;
     };
 
@@ -221,9 +225,9 @@ const Key = ({ onSetTitle, onPageView }) => {
             );
         }
         if (key.relevantTaxaCount === 1) {
-            return <p className="overflow-y-auto mt-96">{language.dictionary.taxonIdentified}</p>;
+            return <h3 className="overflow-y-auto mt-72 lg:mt-20 w-full">{language.dictionary.taxonIdentified}</h3>;
         }
-        return <p className="overflow-y-auto mt-96">{language.dictionary.noTaxonIdentified}</p>;
+        return <h3 className="overflow-y-auto mt-72 lg:mt-20 w-full">{language.dictionary.noTaxonIdentified}</h3>;
     };
 
     /**
@@ -232,31 +236,29 @@ const Key = ({ onSetTitle, onPageView }) => {
      * @returns JSX
      */
     const renderKey = () => (
-        <>
-            <div className={`lg:flex lg:absolute lg:top-20 max-w-full ${selectedCharacters.length > 0 ? 'lg:bottom-20' : 'lg:bottom-0'}`}>
-                {key && renderCharacters()}
-                <div className="lg:ml-10 w-full overflow-y-auto flex-1">
-                    {key && key.taxa && (
-                        <TaxaList
-                            taxa={key.taxa}
-                            count={key.taxaCount}
-                            relevantCount={key.relevantTaxaCount}
-                            offline={offline}
-                            onClickListItem={(taxon) => {
-                                if (revisionId) {
-                                    history.push(`/taxon/${taxon.id}?rev=${revisionId}`);
-                                } else history.push(`/taxon/${taxon.id}?key=${keyId}${offline ? '&offline=true' : ''}`);
-                            }}
-                            onDismissTaxon={(id) => handleDismissTaxon(id)}
-                        />
-                    )}
-                </div>
+        <div className={`lg:flex lg:mt-10 ${selectedCharacters.length > 0 ? 'lg:bottom-20' : 'lg:bottom-0'} w-full`}>
+            {key && renderCharacters()}
+            <div className="overflow-y-auto w-full ml-4">
+                {key && key.taxa && (
+                    <TaxaList
+                        taxa={key.taxa}
+                        count={key.taxaCount}
+                        relevantCount={key.relevantTaxaCount}
+                        offline={offline}
+                        onClickListItem={(taxon) => {
+                            if (revisionId) {
+                                history.push(`/taxon/${taxon.id}?rev=${revisionId}`);
+                            } else history.push(`/taxon/${taxon.id}?key=${keyId}${offline ? '&offline=true' : ''}`);
+                        }}
+                        onDismissTaxon={(id) => handleDismissTaxon(id)}
+                    />
+                )}
             </div>
-        </>
+        </div>
     );
 
     return (
-        <div className="py-14 px-4 lg:w-10/12 m-auto">
+        <div className="py-14 px-4 lg:ml-24 m-auto">
             <div className="fixed top-10 left-0 lg:left-56 xl:left-64 my-4 w-full z-10">
                 <LinearProgress color="secondary" variant="determinate" value={progress} />
             </div>

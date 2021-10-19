@@ -30,22 +30,16 @@ const TaxaList = ({
     };
 
     /**
-     * Render tree view
+     * Render tree item
      *
      * @param {string} relevance Relevant or irrelevant
      * @returns JSX
      */
-    const renderTreeView = (relevance) => {
+    const renderItem = (relevance) => {
         let variable = 'isRelevant';
         if (relevance === 'irrelevant') variable = 'isIrrelevant';
         return (
-            <TreeView
-                className={`w-full lg:w-96 overflow-y-auto lg:h-full ${relevantCount === 1 ? 'h-28' : 'h-96'}`}
-                defaultExpanded={getAllTaxonIds(taxa)}
-                defaultCollapseIcon={<ExpandMoreIcon />}
-                defaultExpandIcon={<ChevronRightIcon />}
-                disableSelection
-            >
+            <div className="mr-4">
                 {taxa && taxa
                     .filter((taxon) => taxon[variable])
                     .map((taxon) => (
@@ -58,57 +52,104 @@ const TaxaList = ({
                             onDismiss={() => onDismissTaxon(taxon.id)}
                         />
                     ))}
-            </TreeView>
+            </div>
         );
     };
 
+    /**
+     * Render tree view
+     *
+     * @param {string} relevance Relevant or irrelevant
+     * @param {boolean} shrink Shrink list when identification successfull
+     * @returns JSX
+     */
+    const renderTreeView = (relevance, shrink) => (
+        <TreeView
+            className={`w-full overflow-y-auto ${shrink && relevantCount === 1 ? 'h-28' : 'h-96'}`}
+            defaultExpanded={getAllTaxonIds(taxa)}
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            disableSelection
+        >
+            {renderItem(relevance)}
+        </TreeView>
+    );
+
     return (
         <div
-            className={`w-full fixed right-0 top-16 mt-2 lg:mt-0 lg:top-0 lg:relative z-20 ${expanded !== undefined ? 'h-full bg-blue-100 bg-opacity-80 lg:bg-white' : 'bg-white'} ${expanded === 0 && 'pt-4 lg:pt-0'}`}
+            className={`w-full fixed right-0 top-16 mt-2 lg:mt-0 lg:top-0 lg:relative z-20 lg:z-0 ${expanded !== undefined ? 'h-full bg-blue-100 bg-opacity-80 lg:bg-white' : 'bg-white'} ${expanded === 0 && 'pt-4 lg:pt-0'}`}
             onClick={() => setExpanded(undefined)}
             role="button"
             tabIndex={0}
         >
-            <Accordion
-                expanded={expanded === 0 || relevantCount === 1}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    if (relevantCount > 0) handleExpand(0);
-                }}
-                className={`${expanded === 1 && 'hidden lg:inline'}`}
-                disabled={relevantCount === 0}
-            >
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="remaining-panel-content"
-                    id="remaining-panel-header"
+            <div className="lg:hidden">
+                <Accordion
+                    expanded={expanded === 0 || relevantCount === 1}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (relevantCount > 0) handleExpand(0);
+                    }}
+                    className={`${expanded === 1 && 'hidden lg:inline'}`}
+                    disabled={relevantCount === 0}
                 >
-                    {`${language.dictionary.labelRemaining} (${relevantCount})`}
-                </AccordionSummary>
-                <AccordionDetails>
-                    {renderTreeView('relevant')}
-                </AccordionDetails>
-            </Accordion>
-            <Accordion
-                expanded={expanded === 1}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    if ((count - relevantCount) > 0) handleExpand(1);
-                }}
-                className={`${expanded === 0 && 'hidden lg:inline'}`}
-                disabled={count - relevantCount === 0}
-            >
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="eliminated-panel-content"
-                    id="eliminated-panel-header"
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="remaining-panel-content"
+                        id="remaining-panel-header"
+                    >
+                        {`${language.dictionary.labelRemaining} (${relevantCount})`}
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {renderTreeView('relevant', true)}
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion
+                    expanded={expanded === 1}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if ((count - relevantCount) > 0) handleExpand(1);
+                    }}
+                    className={`${expanded === 0 && 'hidden lg:inline'}`}
+                    disabled={count - relevantCount === 0}
                 >
-                    {`${language.dictionary.labelEliminated} (${count - relevantCount})`}
-                </AccordionSummary>
-                <AccordionDetails>
-                    {renderTreeView('irrelevant')}
-                </AccordionDetails>
-            </Accordion>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="eliminated-panel-content"
+                        id="eliminated-panel-header"
+                    >
+                        {`${language.dictionary.labelEliminated} (${count - relevantCount})`}
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {renderTreeView('irrelevant', true)}
+                    </AccordionDetails>
+                </Accordion>
+            </div>
+            <div className="hidden lg:inline">
+                <Accordion expanded>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="remaining-panel-content"
+                        id="remaining-panel-header"
+                    >
+                        {`${language.dictionary.labelRemaining} (${relevantCount})`}
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {renderTreeView('relevant')}
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion expanded>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="eliminated-panel-content"
+                        id="eliminated-panel-header"
+                    >
+                        {`${language.dictionary.labelEliminated} (${count - relevantCount})`}
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {renderTreeView('irrelevant')}
+                    </AccordionDetails>
+                </Accordion>
+            </div>
         </div>
     );
 };

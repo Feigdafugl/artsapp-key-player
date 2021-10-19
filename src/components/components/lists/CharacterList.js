@@ -65,9 +65,9 @@ const CharacterList = ({ characters, onSelectStates, offline }) => {
     };
 
     return (
-        <div className="h-full pr-2 overflow-y-auto mb-28 mt-28 lg:mt-0">
+        <div className="h-full w-full pr-2 overflow-y-auto mb-28 mt-28 lg:mt-0">
             {characters && characters.length > 0 && (
-                <List className="w-full lg:w-96">
+                <List className="w-full">
                     {characters.map((character) => renderItem(character))}
                 </List>
             )}
