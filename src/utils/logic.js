@@ -444,7 +444,7 @@ const dismissAllExceptCommonTaxon = (taxa, taxaToKeep) => taxa.map((taxon) => {
     return taxon;
 });
 
-const getResultTaxa = (taxon) => {
+export const getResultTaxa = (taxon) => {
     if (Array.isArray(taxon)) {
         return taxon
             .map((t) => getResultTaxa(t))

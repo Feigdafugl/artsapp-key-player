@@ -7,7 +7,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import LanguageContext from '../../../context/LanguageContext';
 import TaxonItem from './TaxonItem';
-import { getAllTaxonIds } from '../../../utils/logic';
+import { getAllTaxonIds, getResultTaxa } from '../../../utils/logic';
 
 /**
  * Render taxa list
@@ -75,6 +75,30 @@ const TaxaList = ({
         </TreeView>
     );
 
+    /**
+     * Render identification result
+     *
+     * @returns JSX
+     */
+    const renderResult = () => {
+        const taxaResult = getResultTaxa(taxa);
+        if (taxaResult.length > 0) {
+            return (
+                <div className="w-full mr-4">
+                    <TaxonItem
+                        taxon={taxaResult[0]}
+                        key={taxaResult[0].id}
+                        relevance="relevant"
+                        offline={offline}
+                        onClick={(t) => onClickListItem(t)}
+                        onDismiss={() => onDismissTaxon(taxaResult[0].id)}
+                    />
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <div
             className={`w-full fixed right-0 top-16 mt-2 lg:mt-0 lg:top-0 lg:relative z-20 lg:z-0 ${expanded !== undefined ? 'h-full bg-blue-100 bg-opacity-80 lg:bg-white' : 'bg-white'} ${expanded === 0 && 'pt-4 lg:pt-0'}`}
@@ -100,7 +124,7 @@ const TaxaList = ({
                         {`${language.dictionary.labelRemaining} (${relevantCount})`}
                     </AccordionSummary>
                     <AccordionDetails>
-                        {renderTreeView('relevant', true)}
+                        {relevantCount === 1 ? renderResult() : renderTreeView('relevant', true)}
                     </AccordionDetails>
                 </Accordion>
                 <Accordion

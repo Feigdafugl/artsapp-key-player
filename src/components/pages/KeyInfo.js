@@ -56,7 +56,7 @@ const KeyInfo = ({ onSetTitle, onPageView }) => {
     const getKeyMetadata = async () => {
         try {
             const tmpKeys = await getKeys();
-            const tmpOrgs = getOrganizations(language.language.split('_')[0]);
+            const tmpOrgs = await getOrganizations(language.language.split('_')[0]);
             setKeys(tmpKeys);
             setOrganizations(tmpOrgs);
         } catch (err) {
