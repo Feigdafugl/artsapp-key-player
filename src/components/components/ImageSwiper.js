@@ -25,11 +25,9 @@ const ImageSwiper = ({
                 slidesPerView={1}
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}
-                onSwiper={(swiper) => console.log(swiper)}
-                onSlideChange={() => console.log('slide change')}
                 navigation={media.length > 1}
                 loop={media.length > 1}
-                zoom
+                zoom={{ maxRatio: '3' }}
                 initialSlide={index || 0}
             >
                 {media.map((element, i) => (

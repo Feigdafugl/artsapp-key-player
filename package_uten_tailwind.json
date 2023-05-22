@@ -1,0 +1,76 @@
+{
+  "name": "artsapp-key-player",
+  "packageManager": "yarn@3.5.1",
+  "version": "1.0.0",
+  "description": "React.js frontend application for the ArtsApp Key Player",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kehm/artsapp-key-player"
+  },
+  "author": "kehm",
+  "homepage": "https://artsapp.uib.no/player",
+  "dependencies": {
+    "@craco/craco": "^7.1.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "autoprefixer": "^10.4.14",
+    "axios": "^1.4.0",
+    "comlink-loader": "^2.0.0",
+    "ga-4-react": "^0.1.281",
+    "idb": "^7.1.1",
+    "lodash": "^4.17.21",
+    "postcss": "^8.4.23",
+    "react": "^18.2.0",
+    "react-autosuggest": "^10.1.0",
+    "react-cookie-consent": "^8.0.1",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^8.0.7",
+    "react-router": "^6.11.0",
+    "react-router-dom": "^6.11.0",
+    "react-scripts": "5.0.1",
+    "swiper": "^9.2.4",
+    "tailwindcss": "^3.3.2",
+    "workbox-core": "^6.5.4",
+    "workbox-expiration": "^6.5.4",
+    "workbox-precaching": "^6.5.4",
+    "workbox-routing": "^6.5.4",
+    "workbox-strategies": "^6.5.4"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^8.39.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.24.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
+}
