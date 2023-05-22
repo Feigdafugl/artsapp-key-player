@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Alert from '@material-ui/lab/Alert';
 import LanguageContext from '../../context/LanguageContext';
 import formatDate from '../../utils/format-date';
@@ -14,7 +13,7 @@ import ActionButton from '../components/buttons/ActionButton';
 const Observation = ({ onSetTitle }) => {
     const { language } = useContext(LanguageContext);
     const { observationId } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [observation, setObservation] = useState(undefined);
     const [error, setError] = useState(undefined);
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -62,8 +61,8 @@ const Observation = ({ onSetTitle }) => {
             if (Array.isArray(observations)) {
                 observations = observations.filter((element) => element.id !== observation.id);
                 localStorage.setItem('observations', JSON.stringify(observations));
-                history.replace('/observations');
-                history.goBack();
+                navigate('/observations', { replace: true });
+                navigate(-1);
             } else setError(language.dictionary.storageError);
         } catch (err) {
             setError(language.dictionary.storageError);

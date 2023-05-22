@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import BackButton from '../components/buttons/BackButton';
@@ -9,7 +10,7 @@ import LogoButton from '../components/buttons/LogoButton';
  * Render top title bar
  */
 const TitleBar = ({ title }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const [showReturn, setShowReturn] = useState(false);
 
@@ -32,8 +33,8 @@ const TitleBar = ({ title }) => {
         <Toolbar>
             <span className="lg:hidden">
                 {showReturn
-                    ? <BackButton onClick={() => history.goBack()} />
-                    : <LogoButton onClick={() => history.push('/about')} />}
+                    ? <BackButton onClick={() => navigate(-1)} />
+                    : <LogoButton onClick={() => navigate('/about')} />}
             </span>
             <h1 className="font-normal ml-2 mr-10 overflow-hidden overflow-ellipsis whitespace-nowrap">
                 {title}

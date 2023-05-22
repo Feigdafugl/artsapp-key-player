@@ -5,6 +5,7 @@
  * @param {Array} persons Array of person IDs and names
  * @returns {string} Contributor name
  */
+/* eslint-disable import/prefer-default-export */
 export const getContributorName = (contributor, persons) => {
     let person = contributor;
     if (persons) {

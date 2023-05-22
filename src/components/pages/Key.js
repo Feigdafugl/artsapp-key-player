@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useHistory, useLocation } from 'react-router';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import Alert from '@material-ui/lab/Alert';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import LanguageContext from '../../context/LanguageContext';
@@ -24,7 +24,7 @@ const Key = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
     const { keyId } = useParams();
     const { revisionId } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const [key, setKey] = useState(undefined);
     const [progress, setProgress] = useState(0);
@@ -247,8 +247,8 @@ const Key = ({ onSetTitle, onPageView }) => {
                         offline={offline}
                         onClickListItem={(taxon) => {
                             if (revisionId) {
-                                history.push(`/taxon/${taxon.id}?rev=${revisionId}`);
-                            } else history.push(`/taxon/${taxon.id}?key=${keyId}${offline ? '&offline=true' : ''}`);
+                              navigate(`/taxon/${taxon.id}?rev=${revisionId}`);
+                            } else navigate(`/taxon/${taxon.id}?key=${keyId}${offline ? '&offline=true' : ''}`);
                         }}
                         onDismissTaxon={(id) => handleDismissTaxon(id)}
                     />

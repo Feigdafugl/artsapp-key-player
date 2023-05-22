@@ -1,8 +1,10 @@
+/* eslint-disable */ 
+
 import React, {
   StrictMode, useCallback, useEffect, useState,
 } from 'react';
 import './styles/tailwind.css';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { getCookieConsentValue } from 'react-cookie-consent';
 import debounce from 'lodash/debounce';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -37,10 +39,12 @@ const App = () => {
 
   // Set default language
   const [language, setLanguage] = useState(languageState);
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
   const languageValue = { language, setLanguage };
 
   // Set default page
   const [page, setPage] = useState(pageState);
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
   const pageValue = { page, setPage };
 
   const [pageTitle, setPageTitle] = useState(undefined);
@@ -77,9 +81,7 @@ const App = () => {
   /**
    * Handle page view tracking
    */
-  const handlePageView = useCallback(
-    debounce(async (title) => trackPageView(title), 500), [],
-  );
+  const handlePageView = useCallback(debounce(async (title) => trackPageView(title), 500), []);
 
   /**
    * Render notification if update is available
@@ -94,19 +96,39 @@ const App = () => {
     </div>
   );
 
+
   /**
-   * Render page with component
+   * Render page with css wrapper
    *
-   * @param {Object} Component Component to render
+   * @param {Object} children Component to render
    */
-  const renderPage = (Component) => (
+  const Wrapper = ({ children }) => (
     <div className="h-full lg:ml-44 mb-10 lg:mb-0 bg-white z-50 text-darkGrey">
-      <Component
-        onSetTitle={(title) => setPageTitle(title)}
-        onPageView={(title) => handlePageView(title)}
-      />
+      {children}
     </div>
   );
+
+  /**
+   * adding Props to Components
+   *
+   */
+  const commonProps = {
+    onSetTitle: (title) => setPageTitle(title),
+    onPageView: (title) => handlePageView(title)
+  };
+
+  /* TODO
+  ###DONE Wrappe alle route elements i wrapper
+  ###DONE Fikse 4 siste route element lik de over, ikke bruke renderPage 
+  ###DONE delete renderPage
+
+
+  TODO annet
+  ###DONE Tailwind
+  Observations --> feilmelding --> localStorage ???
+
+  ###DONE Feilmelding error, artside strandkrabbe http://localhost:3000/player/taxon/3099?key=8f89e421-8063-4ade-9662-dab9c02d40cb 
+  */
 
   return (
     <StrictMode>
@@ -116,19 +138,19 @@ const App = () => {
             <ThemeProvider theme={materialTheme}>
               <Nav title={pageTitle} />
               {updateReady && renderUpdateNotification()}
-              <Switch>
-                <Route path="/" exact component={() => renderPage(Keys)} />
-                <Route path="/info/:keyId" exact component={() => renderPage(KeyInfo)} />
-                <Route path="/keys/:keyId" exact component={() => renderPage(Key)} />
-                <Route path="/taxon/:taxonId" exact component={() => renderPage(Taxon)} />
-                <Route path="/observations" exact component={() => renderPage(Observations)} />
-                <Route path="/observations/:observationId" exact component={() => renderPage(Observation)} />
-                <Route path="/downloads" exact component={() => renderPage(Downloads)} />
-                <Route path="/preview/:revisionId" exact component={() => renderPage(Key)} />
-                <Route path="/about" exact component={() => renderPage(About)} />
-                <Route path="/help" exact component={() => renderPage(Help)} />
-                <Route component={() => renderPage(NoMatch)} />
-              </Switch>
+              <Routes>
+                <Route path="/" element={<Wrapper><Keys {...commonProps} /></Wrapper>}/>
+                <Route path="/info/:keyId" element={<Wrapper><KeyInfo {...commonProps} /></Wrapper>} />
+                <Route path="/keys/:keyId" element={<Wrapper><Key {...commonProps}/></Wrapper>} />
+                <Route path="/taxon/:taxonId" element={<Wrapper><Taxon {...commonProps}/></Wrapper>} />
+                <Route path="/observations" element={<Wrapper><Observations {...commonProps}/></Wrapper>} />
+                <Route path="/observations/:observationId" exact element={<Wrapper><Observation {...commonProps}/></Wrapper>} />
+                <Route path="/downloads" element={<Wrapper><Downloads {...commonProps}/></Wrapper>} />
+                <Route path="/preview/:revisionId" element={<Wrapper><Key {...commonProps}/></Wrapper>} />
+                <Route path="/about" element={<Wrapper><About {...commonProps}/></Wrapper>} />
+                <Route path="/help" element={<Wrapper><Help {...commonProps}/></Wrapper>} />
+                <Route element={<Wrapper><NoMatch {...commonProps}/></Wrapper>} />
+              </Routes>
               <CookieNotice onConsent={() => setCookieConsent(getCookieConsentValue())} />
             </ThemeProvider>
           </PageContext.Provider>

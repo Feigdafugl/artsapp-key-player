@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Alert from '@material-ui/lab/Alert';
 import PlayArrowOutlined from '@material-ui/icons/List';
 import Fab from '@material-ui/core/Fab';
@@ -16,7 +16,7 @@ import ConfirmDelete from '../dialogs/ConfirmDelete';
  */
 const Downloads = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
-    const history = useHistory();
+    const navigate = useNavigate();
     const [downloadedKeys, setDownloadedKeys] = useState(undefined);
     const [keys, setKeys] = useState(undefined);
     const [collections, setCollections] = useState(undefined);
@@ -139,8 +139,8 @@ const Downloads = ({ onSetTitle, onPageView }) => {
                     keys={downloadedKeys}
                     showRemove
                     offline
-                    onClickListItem={(id) => history.push(`/keys/${id}?offline=true`)}
-                    onClickInfo={(id) => history.push(`/info/${id}?offline=true`)}
+                    onClickListItem={(id) => navigate(`/keys/${id}?offline=true`)}
+                    onClickInfo={(id) => navigate(`/info/${id}?offline=true`)}
                     onClickRemove={(id) => setConfirmDelete(id)}
                 />
             ) : <p className="es:text-center p-4">{language.dictionary.noOfflineKeys}</p>}

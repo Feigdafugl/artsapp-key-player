@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useHistory, useLocation } from 'react-router';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import PlayArrowOutlined from '@material-ui/icons/PlayArrowOutlined';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
@@ -22,7 +22,7 @@ import { getKeyInfoFromDatabase } from '../../utils/db';
 const KeyInfo = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
     const { keyId } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const [key, setKey] = useState(undefined);
     const [keys, setKeys] = useState(undefined);
@@ -115,8 +115,8 @@ const KeyInfo = ({ onSetTitle, onPageView }) => {
     const handleStart = () => {
         const params = new URLSearchParams(location.search);
         if (params.get('offline') === 'true') {
-            history.push(`/keys/${keyId}?offline=true`);
-        } else history.push(`/keys/${keyId}`);
+          navigate(`/keys/${keyId}?offline=true`);
+        } else navigate(`/keys/${keyId}`);
     };
 
     /**

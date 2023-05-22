@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Alert from '@material-ui/lab/Alert';
 import LanguageContext from '../../context/LanguageContext';
 import {
@@ -15,7 +15,7 @@ import { getKeysFromDatabase } from '../../utils/db';
  */
 const Keys = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
-    const history = useHistory();
+    const navigate = useNavigate();
     const [keys, setKeys] = useState(undefined);
     const [filteredKeys, setFilteredKeys] = useState([]);
     const [error, setError] = useState(undefined);
@@ -99,8 +99,8 @@ const Keys = ({ onSetTitle, onPageView }) => {
                     error={error}
                     showFilter={navigator.onLine}
                     offline={!navigator.onLine}
-                    onClickListItem={(id) => history.push(`/keys/${id}${navigator.onLine ? '' : '?offline=true'}`)}
-                    onClickInfo={(id) => history.push(`/info/${id}${navigator.onLine ? '' : '?offline=true'}`)}
+                    onClickListItem={(id) => navigate(`/keys/${id}${navigator.onLine ? '' : '?offline=true'}`)}
+                    onClickInfo={(id) => navigate(`/info/${id}${navigator.onLine ? '' : '?offline=true'}`)}
                 />
             )}
             {!navigator.onLine && (

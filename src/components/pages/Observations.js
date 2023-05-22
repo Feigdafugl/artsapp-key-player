@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import LanguageContext from '../../context/LanguageContext';
 import ObservationList from '../components/lists/ObservationList';
 
@@ -8,7 +8,7 @@ import ObservationList from '../components/lists/ObservationList';
  */
 const Observations = ({ onSetTitle, onPageView }) => {
     const { language } = useContext(LanguageContext);
-    const history = useHistory();
+    const navigate = useNavigate();
     const [observations, setObservations] = useState(undefined);
     const [error, setError] = useState(undefined);
 
@@ -42,7 +42,7 @@ const Observations = ({ onSetTitle, onPageView }) => {
                 <ObservationList
                     observations={observations}
                     error={error}
-                    onClickListItem={(observation) => history.push(`observations/${observation.id}`)}
+                    onClickListItem={(observation) => navigate(`${observation.id}`)}
                 />
             ) : <p className="es:text-center p-4">{language.dictionary.noSavedObservations}</p>}
         </div>

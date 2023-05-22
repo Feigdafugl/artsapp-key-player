@@ -149,8 +149,10 @@ const setTaxaConflicts = (taxa, alternative, relevantStatements) => taxa.map((ta
  * @param {Array} statements Statements array
  * @returns {Array} Updated taxa array
  */
+// eslint-disable-next-line function-paren-newline
 const removeMultistateConflicts = (
     alternativeId, character, taxa, statements,
+// eslint-disable-next-line function-paren-newline
 ) => taxa.map((taxon) => {
     if (taxon.conflicts.length > 0) {
         const index = taxon.conflicts.findIndex((element) => element === alternativeId);
@@ -329,6 +331,7 @@ const answer = (key, alternativeId, value) => {
 };
 
 const getAnswer = (alternativeId, characters) => {
+    // eslint-disable-next-line no-restricted-syntax, no-unreachable-loop
     for (const character of characters) {
         const alternatives = getAlternatives(character);
         const alternative = alternatives.find(

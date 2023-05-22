@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Backdrop from '@material-ui/core/Backdrop';
 import IconButton from '@material-ui/core/IconButton';
 import SpeedDial from '@material-ui/lab/SpeedDial';
@@ -25,7 +26,7 @@ const KeyOptionsButton = ({
 }) => {
     const classes = useStyles();
     const { language } = useContext(LanguageContext);
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const [open, setOpen] = useState(false);
     const actions = [
@@ -44,7 +45,7 @@ const KeyOptionsButton = ({
             onClickReset();
         } else if (index === 1) {
             const path = location.pathname.split('/');
-            if (path.length > 0) { history.push(`/info/${path[path.length - 1]}`); }
+            if (path.length > 0) { navigate(`/info/${path[path.length - 1]}`); }
         }
     };
 

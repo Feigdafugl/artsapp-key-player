@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import SwiperCore, {
-    Pagination, Navigation,
-} from 'swiper/core';
-import 'swiper/swiper.min.css';
-import 'swiper/components/pagination/pagination.min.css';
-import 'swiper/components/navigation/navigation.min.css';
 import { getMediaFromDatabase } from '../../utils/db';
 import ImageInfo from './ImageInfo';
 import ProgressIndicator from './ProgressIndicator';
-
-SwiperCore.use([Pagination, Navigation]);
 
 /**
  * Render image swiper

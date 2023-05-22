@@ -101,7 +101,7 @@ const TaxaList = ({
 
     return (
         <div
-            className={`w-full fixed right-0 top-16 mt-2 lg:mt-0 lg:top-0 lg:relative z-20 lg:z-0 ${expanded !== undefined ? 'h-full bg-blue-100 bg-opacity-80 lg:bg-white' : 'bg-white'} ${expanded === 0 && 'pt-4 lg:pt-0'}`}
+            className={`w-full fixed right-0 top-16 mt-2 lg:mt-0 lg:top-0 lg:relative z-20 lg:z-0 ${expanded !== undefined ? 'h-full bg-blue-100 bg-opacity-80 lg:bg-white' : 'bg-white'} ${expanded === 0 && 'pt-4 lg:pt-0'} mb-14`}
             onClick={() => setExpanded(undefined)}
             role="button"
             tabIndex={0}

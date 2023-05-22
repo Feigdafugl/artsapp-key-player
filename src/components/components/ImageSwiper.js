@@ -1,15 +1,13 @@
 import React from 'react';
+import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, {
-    Pagination, Navigation,
-} from 'swiper/core';
-import 'swiper/swiper.min.css';
-import 'swiper/components/pagination/pagination.min.css';
-import 'swiper/components/navigation/navigation.min.css';
 import CloseButton from './buttons/CloseButton';
 import ImageSlide from './ImageSlide';
 
-SwiperCore.use([Pagination, Navigation]);
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 /**
  * Render image swiper
@@ -21,6 +19,14 @@ const ImageSwiper = ({
         <CloseButton onClick={() => onClose()} />
         {media && (
             <Swiper
+                // install Swiper modules
+                modules={[Navigation, Pagination]}
+                spaceBetween={50}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                scrollbar={{ draggable: true }}
+                onSwiper={(swiper) => console.log(swiper)}
+                onSlideChange={() => console.log('slide change')}
                 navigation={media.length > 1}
                 loop={media.length > 1}
                 zoom

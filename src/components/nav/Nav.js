@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import logo from '../../images/artsapp-key-player-logo.png';
 import LanguageContext from '../../context/LanguageContext';
@@ -17,7 +18,7 @@ import ListButton from '../components/buttons/ListButton';
 const Nav = ({ title }) => {
     const { language, setLanguage } = useContext(LanguageContext);
     const { page, setPage } = useContext(PageContext);
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const [showHelpIcon, setShowHelpIcon] = useState(true);
 
@@ -72,20 +73,20 @@ const Nav = ({ title }) => {
             const currentPage = path[path.length - 1];
             switch (index) {
                 case 0:
-                    if (currentPage !== '') history.push('/');
+                    if (currentPage !== '') navigate('/');
                     break;
                 case 1:
-                    if (currentPage !== 'observations') history.push('/observations');
+                    if (currentPage !== 'observations') navigate('/observations');
                     break;
                 case 2:
-                    if (currentPage !== 'downloads') history.push('/downloads');
+                    if (currentPage !== 'downloads') navigate('/downloads');
                     break;
                 case 3:
-                    history.push('/about');
+                    navigate('/about');
                     break;
                 case 4:
                     if (path.length > 2) prevPage = path[2];
-                    history.push(`/help?page=${prevPage}`);
+                    navigate(`/help?page=${prevPage}`);
                     break;
                 default:
                     break;
