@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-restricted-syntax */
 // (un)dismisses a taxon or the descendant by taxon id if present in this branch
 const toggleDismiss = (taxon, taxonId) => {
     if (taxon.id === taxonId) {
@@ -52,7 +54,7 @@ const setBranchRelevances = (taxon, alreadyIrrelevant) => {
 
 // sets the relevances and irrelevances of taxa (as endpoint or parent of an endpoint)
 const setTaxonRelevances = (taxa, alreadyIrrelevant = false) => taxa.map(
-    (taxon) => setBranchRelevances(taxon, alreadyIrrelevant),
+  (taxon) => setBranchRelevances(taxon, alreadyIrrelevant),
 );
 
 // for a list of taxa, see if there is a statement from a given list
@@ -70,6 +72,7 @@ const isRelevantForAllTaxa = (taxa, statements) => {
         // if it has a statement or does not have to be considered,
         // everything is okay with this branch
         if (statements.some((s) => s.taxonId === taxon.id) || !taxon.isRelevant) {
+            // eslint-disable-next-line no-continue
             continue;
         }
 
@@ -347,6 +350,7 @@ const getAnswer = (alternativeId, characters) => {
 
 const checkLogicalPremise = (premise, characters) => {
     if (Array.isArray(premise) && premise.length === 1) {
+        // eslint-disable-next-line prefer-destructuring
         premise = premise[0];
     }
 
@@ -406,7 +410,7 @@ const setTaxaRelevancesByIds = (taxa, ids) => taxa
                 taxon = undefined;
             } else {
                 taxon.children = filterTaxaByIds(taxon.children, ids);
-                taxon = !!taxon.children.length ? taxon : undefined;
+                taxon = taxon.children.length ? taxon : undefined;
             }
         }
         return taxon;

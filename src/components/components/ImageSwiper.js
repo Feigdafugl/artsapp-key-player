@@ -23,11 +23,9 @@ const ImageSwiper = ({
                 modules={[Navigation, Pagination]}
                 spaceBetween={50}
                 slidesPerView={1}
-                pagination={{ clickable: true }}
-                scrollbar={{ draggable: true }}
                 navigation={media.length > 1}
                 loop={media.length > 1}
-                zoom={{ maxRatio: '3' }}
+                zoom
                 initialSlide={index || 0}
             >
                 {media.map((element, i) => (

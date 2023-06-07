@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import en from './en.json';
 import no_bm from './no-bm.json';
 import no_ny from './no-ny.json';

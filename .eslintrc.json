@@ -34,7 +34,7 @@
         ],
         "no-unused-vars": "warn",
         "no-shadow": "warn",
-        "no-param-reassign": "warn",
+        "no-param-reassign": 0,
         "camelcase": "warn",
         "no-empty": "warn",
         "no-nested-ternary": "warn",

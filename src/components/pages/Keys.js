@@ -78,14 +78,14 @@ const Keys = ({ onSetTitle, onPageView }) => {
      * Open welcome dialog if first launch
      */
     useEffect(() => {
-        if (!openWelcome && !localStorage.getItem('welcome')) setOpenWelcome(true);
+        if (!openWelcome && !window.localStorage.getItem('welcome')) setOpenWelcome(true);
     }, [openWelcome]);
 
     /**
      * Close welcome dialog
      */
     const handleCloseWelcome = () => {
-        localStorage.setItem('welcome', true);
+        window.localStorage.setItem('welcome', true);
         setOpenWelcome(false);
     };
 

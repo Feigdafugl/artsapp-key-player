@@ -85,7 +85,7 @@ const ObservationList = ({ observations, error, onClickListItem }) => {
                     {filteredObs.map((observation) => (
                         <ListItem
                             key={observation.id}
-                            className="h-24 mb-2 rounded shadow-md bg-gray-100 cursor-pointer hover:bg-blue-100"
+                            className="h-24 mb-4 rounded shadow-md bg-gray-100 cursor-pointer hover:bg-blue-100"
                             onClick={() => onClickListItem(observation)}
                         >
                             {observation.media && observation.media.length > 0

@@ -10,6 +10,7 @@ import { getKey, getKeyInfo } from './api';
  */
 const initDatabase = async (dbName, stores) => {
     const db = await openDB(dbName, 1, {
+        // eslint-disable-next-line no-shadow
         upgrade(db) {
             stores.forEach((store) => {
                 if (!db.objectStoreNames.contains(store)) db.createObjectStore(store);
@@ -57,7 +58,7 @@ const putMedia = async (media, db) => {
                 media.id,
             );
         }
-    } catch (err) { }
+    } catch (err) { /* empty */ }
 };
 
 /**
@@ -85,7 +86,7 @@ const removeMedia = async (mediaId, db) => {
             process.env.REACT_APP_MEDIA_STORE_NAME,
             mediaId,
         );
-    } catch (err) { }
+    } catch (err) { /* empty */ }
 };
 
 /**

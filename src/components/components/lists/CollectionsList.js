@@ -26,7 +26,7 @@ const CollectionsList = ({
                 {collections.map((collection) => (
                     <ListItem
                         key={collection.id}
-                        className="rounded cursor-pointer bg-gray-100 hover:bg-blue-100 h-16 mb-2 shadow-md"
+                        className="rounded cursor-pointer bg-gray-100 hover:bg-blue-100 h-16 mb-4 shadow-md"
                         onClick={() => onClickListItem(collection.id)}
                     >
                         <ListItemIcon>

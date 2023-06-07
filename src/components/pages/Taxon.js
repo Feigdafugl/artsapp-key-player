@@ -12,7 +12,7 @@ import { getTaxon } from '../../utils/logic';
 import LocationDialog from '../dialogs/LocationDialog';
 import ActionButton from '../components/buttons/ActionButton';
 import { getKeyFromDatabase } from '../../utils/db';
-import initialize from '../../utils/key';
+import { initialize } from '../../utils/key';
 
 /**
  * Render taxon page
@@ -141,7 +141,7 @@ const Taxon = ({ onSetTitle, onPageView }) => {
      */
     const saveObservation = () => {
         try {
-            let observations = localStorage.getItem('observations');
+            let observations = window.localStorage.getItem('observations');
             if (observations) observations = JSON.parse(observations);
             if (!Array.isArray(observations)) observations = [];
             const date = new Date();
@@ -154,7 +154,7 @@ const Taxon = ({ onSetTitle, onPageView }) => {
                 position,
                 createdAt: date.toISOString(),
             });
-            localStorage.setItem('observations', JSON.stringify(observations));
+            window.localStorage.setItem('observations', JSON.stringify(observations));
             setSaved(true);
         } catch (err) {
             setError(language.dictionary.storageError);

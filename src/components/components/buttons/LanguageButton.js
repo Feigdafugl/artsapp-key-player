@@ -19,7 +19,7 @@ const LanguageButton = () => {
      */
     const handleSetLanguage = (languageCode) => {
         setLanguage({ language: languageCode, dictionary: dictionary[languageCode] });
-        localStorage.setItem('language', languageCode);
+        window.localStorage.setItem('language', languageCode);
     };
 
     return (

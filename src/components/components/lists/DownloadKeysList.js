@@ -21,7 +21,7 @@ const DownloadKeysList = ({
                 {keys.map((key) => (
                     <ListItem
                         key={key.id}
-                        className="rounded cursor-pointer bg-gray-100 hover:bg-blue-100 h-16 mb-2 shadow-md"
+                        className="rounded cursor-pointer bg-gray-100 hover:bg-blue-100 h-16 mb-4 shadow-md"
                         onClick={() => onClickListItem(key.filename || key.id)}
                     >
                         {selected && (

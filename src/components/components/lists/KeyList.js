@@ -135,12 +135,12 @@ const KeyList = ({
         <>
             {renderSearchBar()}
             {showFilter && renderFilter()}
-            <div className="overflow-y-auto mt-20 lg:mt-0 pb-8 lg:pb-0 px-2">
+            <div className="overflow-y-auto mt-20 lg:mt-8 pb-8 lg:pb-0 px-2">
                 <List>
                     {filteredKeys.map((key) => (
                         <ListItem
                             key={key.id}
-                            className="rounded cursor-pointer bg-gray-100 hover:bg-blue-100 h-24 mb-2 shadow-md"
+                            className="rounded cursor-pointer bg-gray-100 hover:bg-blue-100 h-24 mb-5  shadow-md"
                             onClick={() => onClickListItem(key.filename || key.id)}
                         >
                             <ListAvatar

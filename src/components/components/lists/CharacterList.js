@@ -34,7 +34,7 @@ const CharacterList = ({ characters, onSelectStates, offline }) => {
         return (
             <ListItem
                 key={character.id}
-                className="rounded cursor-pointer bg-gray-100 hover:bg-blue-100 h-24 mb-2 shadow-md"
+                className="rounded cursor-pointer bg-gray-100 hover:bg-blue-100 h-24 mb-4 shadow-md"
                 onClick={() => setSelectedCharacter(character)}
             >
                 {character.type === 'numerical' ? <ListAvatar media={getCharacterMedia(character, states)} /> : (

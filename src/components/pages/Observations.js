@@ -27,7 +27,7 @@ const Observations = ({ onSetTitle, onPageView }) => {
         if (!observations) {
             onSetTitle(language.dictionary.observations);
             try {
-                let obs = localStorage.getItem('observations');
+                let obs = window.localStorage.getItem('observations');
                 if (obs) obs = JSON.parse(obs);
                 if (Array.isArray(obs)) setObservations(obs);
             } catch (err) {

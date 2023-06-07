@@ -12,15 +12,13 @@ import ProgressIndicator from '../components/ProgressIndicator';
 import KeyOptionsButton from '../components/buttons/KeyOptionsButton';
 import { getLanguage } from '../../utils/language';
 import CharacterList from '../components/lists/CharacterList';
-import WebWorker from '../../workers/index';
 import { getKeyFromDatabase } from '../../utils/db';
-import initialize from '../../utils/key';
+import { setStateAnswers, getCharacterState, initialize } from '../../utils/key';
 
 /**
  * Render key player page
  */
 const Key = ({ onSetTitle, onPageView }) => {
-    const worker = new WebWorker();
     const { language } = useContext(LanguageContext);
     const { keyId } = useParams();
     const { revisionId } = useParams();
@@ -77,13 +75,13 @@ const Key = ({ onSetTitle, onPageView }) => {
             setSelectedCharacters(selected);
             setRemainingCharacters(remaining);
             setProgress(prog);
-            localStorage.setItem(id, JSON.stringify(key));
+            window.localStorage.setItem(id, JSON.stringify(key));
             setKey(key);
         } else {
             setProgress(0);
-            localStorage.setItem(id, undefined);
+            window.localStorage.setItem(id, undefined);
             setKey(undefined);
-        }
+            }
         return key;
     };
 
@@ -101,7 +99,7 @@ const Key = ({ onSetTitle, onPageView }) => {
                     updateRemainingCharacters(init, init.key.id);
                     onSetTitle(getLanguage(tmpKey.title, language.language.split('_')[0]));
                 } catch (err) {
-                    localStorage.removeItem(keyId);
+                    window.localStorage.removeItem(keyId);
                     setError(language.dictionary.storageError);
                 }
             } catch (err) {
@@ -145,12 +143,12 @@ const Key = ({ onSetTitle, onPageView }) => {
                 state.selected = undefined;
             });
             if (arr.length > 0) {
-                tmpKey = await worker.setStateAnswers(
+                tmpKey = await setStateAnswers(
                     key,
                     arr.map((element) => ({ id: element.id })),
                     filterRelevant,
                 );
-                const init = await worker.getCharacterState(tmpKey);
+                const init = await getCharacterState(tmpKey);
                 tmpKey = await updateRemainingCharacters(init, key.id);
             }
         } else updateRemainingCharacters(undefined, key.id);
@@ -168,13 +166,13 @@ const Key = ({ onSetTitle, onPageView }) => {
         if (selectedCharacters.find((element) => element.id === characterId)) {
             tmpKey = await handleResetCharacter(characterId);
         }
-        tmpKey = await worker.setStateAnswers(
+        tmpKey = await setStateAnswers(
             tmpKey,
             states.map((state) => ({ id: state.id, value: state.selected })),
             filterRelevant,
             characterId,
         );
-        const init = await worker.getCharacterState(tmpKey);
+        const init = await getCharacterState(tmpKey);
         updateRemainingCharacters(init, key.id);
     };
 
@@ -185,12 +183,12 @@ const Key = ({ onSetTitle, onPageView }) => {
      */
     const handleRemoveState = async (id) => {
         setShowProgress(true);
-        const tmpKey = await worker.setStateAnswers(
+        const tmpKey = await setStateAnswers(
             key,
             [{ id }],
             filterRelevant,
         );
-        const init = await worker.getCharacterState(tmpKey);
+        const init = await getCharacterState(tmpKey);
         updateRemainingCharacters(init, key.id);
     };
 
@@ -202,7 +200,7 @@ const Key = ({ onSetTitle, onPageView }) => {
     const handleDismissTaxon = async (id) => {
         let tmpKey = { ...key };
         tmpKey = toggleTaxonDismissed(key, id, filterRelevant === 'all' || false);
-        const init = await worker.getCharacterState(tmpKey);
+        const init = await getCharacterState(tmpKey);
         updateRemainingCharacters(init, key.id);
     };
 

@@ -23,7 +23,7 @@ const Observation = ({ onSetTitle }) => {
      * Get observation from local storage
      */
     const getObservation = () => {
-        let observations = localStorage.getItem('observations');
+        let observations = window.localStorage.getItem('observations');
         if (observations) observations = JSON.parse(observations);
         if (Array.isArray(observations)) {
             return observations.find((element) => `${element.id}` === observationId);
@@ -56,11 +56,11 @@ const Observation = ({ onSetTitle }) => {
      */
     const handleRemoveObservation = () => {
         try {
-            let observations = localStorage.getItem('observations');
+            let observations = window.localStorage.getItem('observations');
             if (observations) observations = JSON.parse(observations);
             if (Array.isArray(observations)) {
                 observations = observations.filter((element) => element.id !== observation.id);
-                localStorage.setItem('observations', JSON.stringify(observations));
+                window.localStorage.setItem('observations', JSON.stringify(observations));
                 navigate('/observations', { replace: true });
                 navigate(-1);
             } else setError(language.dictionary.storageError);

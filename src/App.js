@@ -55,7 +55,7 @@ const App = () => {
    * Check for previously selected language
    */
   useEffect(() => {
-    const selectedLanguage = localStorage.getItem('language');
+    const selectedLanguage = window.localStorage.getItem('language');
     if (selectedLanguage && (selectedLanguage !== language.language)) {
       setLanguage({ language: selectedLanguage, dictionary: dictionary[selectedLanguage] });
     }
@@ -125,7 +125,7 @@ const App = () => {
 
   TODO annet
   ###DONE Tailwind
-  Observations --> feilmelding --> localStorage ???
+  Observations --> feilmelding --> window.localStorage.???
 
   ###DONE Feilmelding error, artside strandkrabbe http://localhost:3000/player/taxon/3099?key=8f89e421-8063-4ade-9662-dab9c02d40cb 
   */

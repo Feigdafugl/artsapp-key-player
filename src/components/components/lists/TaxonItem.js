@@ -31,7 +31,7 @@ const TaxonItem = ({
             }}
             onClick={(e) => e.stopPropagation()}
             label={(
-                <div className="bg-gray-100 flex py-2 pr-4 pl-2 w-full h-24 mb-2 rounded hover:bg-blue-100">
+                <div className="bg-gray-100 flex py-2 pr-4 pl-2 w-full h-24 mb-3 rounded hover:bg-blue-100">
                     <div className="m-auto">
                         <ListAvatar
                             media={getTaxonMedia(taxon)}
